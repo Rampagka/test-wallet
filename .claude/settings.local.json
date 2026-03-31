@@ -4,7 +4,9 @@
       "WebSearch",
       "WebFetch(domain:docs.ton.org)",
       "WebFetch(domain:github.com)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(find:*)",
+      "Bash(npx vue-tsc:*)"
     ]
   }
 }

@@ -1,0 +1,105 @@
+<script setup lang="ts">
+import TransactionItem from '@/modules/dashboard/components/transaction-item.vue'
+
+import type { Transaction } from '@/modules/dashboard/models/types/transaction'
+
+const props = defineProps<{
+    transactions: Transaction[]
+    isLoading: boolean
+    error: string | null
+    searchQuery: string
+}>()
+
+const emit = defineEmits<{
+    'update:searchQuery': [value: string]
+}>()
+</script>
+
+<template>
+    <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-text-primary">История</h2>
+            <span v-if="!isLoading && transactions.length > 0" class="text-sm text-text-muted">
+                {{ transactions.length }}
+            </span>
+        </div>
+
+        <v-text-field
+            :model-value="searchQuery"
+            placeholder="Поиск..."
+            variant="outlined"
+            density="compact"
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            clearable
+            @update:model-value="(v: string) => emit('update:searchQuery', v ?? '')"
+            class="search-field"
+        />
+
+        <div v-if="isLoading" class="flex flex-col gap-2">
+            <v-skeleton-loader
+                v-for="i in 4"
+                :key="i"
+                type="list-item-avatar-two-line"
+                class="skeleton-item rounded-xl bg-transparent"
+            />
+        </div>
+
+        <v-alert
+            v-else-if="error"
+            type="error"
+            variant="tonal"
+            density="compact"
+            class="flex flex-0 gap-2 p-2"
+        >
+            {{ error }}
+        </v-alert>
+
+        <div
+            v-else-if="transactions.length === 0 && searchQuery.length > 0"
+            class="py-8 text-center text-sm text-text-muted"
+        >
+            Ничего не найдено
+        </div>
+
+        <div v-else-if="transactions.length === 0" class="py-8 text-center text-sm text-text-muted">
+            <p>Транзакций пока нет</p>
+            <p class="mt-1 text-xs">Получите тестовые TON через @testgiver_ton_bot</p>
+        </div>
+
+        <div v-else class="flex flex-col gap-1">
+            <TransactionItem
+                v-for="tx in transactions"
+                :key="tx.hash"
+                :direction="tx.direction"
+                :short-address="tx.shortAddress"
+                :amount="tx.amount"
+                :timestamp="tx.timestamp"
+                :comment="tx.comment"
+                :is-dust="tx.isDust"
+            />
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.search-field {
+    flex: 0 0 auto;
+}
+
+.search-field :deep(.v-field__prepend-inner) {
+    margin-inline-end: 8px;
+}
+
+.skeleton-item :deep(.v-skeleton-loader__bone) {
+    margin-bottom: 4px;
+}
+
+.skeleton-item :deep(.v-skeleton-loader__list-item-avatar-two-line) {
+    gap: 12px;
+}
+
+.skeleton-item :deep(.v-skeleton-loader__sentences) {
+    gap: 6px;
+}
+</style>

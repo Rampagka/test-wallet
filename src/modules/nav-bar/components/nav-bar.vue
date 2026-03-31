@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { NavTab } from '@/modules/nav-bar/models/types/nav-tab'
+
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
-import type { NavTab } from '@/modules/nav-bar/models/types/nav-tab'
 
 const route = useRoute()
 const router = useRouter()
@@ -31,7 +31,7 @@ function onTabClick(index: number) {
         class="nav-bar"
         @update:model-value="onTabClick"
     >
-        <v-btn v-for="tab in tabs" :key="tab.name" :value="tab.name">
+        <v-btn v-for="tab in tabs" :key="tab.name" :value="tab.name" class="nav-btn">
             <v-icon>{{ tab.icon }}</v-icon>
             <span>{{ tab.label }}</span>
         </v-btn>
@@ -41,5 +41,14 @@ function onTabClick(index: number) {
 <style scoped>
 .nav-bar {
     border-top: 1px solid var(--color-border);
+}
+
+.nav-btn :deep(.v-btn__overlay) {
+    display: none;
+}
+
+.nav-btn:hover {
+    opacity: 0.8;
+    transition: 0.2s all ease;
 }
 </style>

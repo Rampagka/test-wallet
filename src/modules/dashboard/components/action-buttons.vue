@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ButtonAccent, ButtonSecondary } from '@/common/ui'
+
 const emit = defineEmits<{
     send: []
     receive: []
@@ -7,36 +9,18 @@ const emit = defineEmits<{
 
 <template>
     <div class="flex w-full gap-3 px-4">
-        <v-btn
-            color="primary"
-            size="large"
-            rounded="lg"
-            class="flex-1 gap-2"
+        <ButtonAccent
+            text="Отправить"
             prepend-icon="mdi-arrow-up"
+            class="flex-1"
             @click="emit('send')"
-        >
-            Отправить
-        </v-btn>
+        />
 
-        <v-btn
-            variant="tonal"
-            size="large"
-            rounded="lg"
-            class="receive-btn flex-1 gap-2"
+        <ButtonSecondary
+            text="Получить"
             prepend-icon="mdi-arrow-down"
+            class="flex-1"
             @click="emit('receive')"
-        >
-            Получить
-        </v-btn>
+        />
     </div>
 </template>
-
-<style scoped>
-.receive-btn :deep(.v-btn__overlay) {
-    display: none;
-}
-
-.receive-btn:hover {
-    opacity: 0.8;
-}
-</style>

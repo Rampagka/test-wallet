@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ButtonAccent, ButtonError } from '@/common/ui'
+
 import { highlightDifferences } from '@/modules/send/helpers/address-validation'
 
 import { computed } from 'vue'
@@ -27,10 +29,12 @@ const differences = computed(() => {
         :model-value="isOpen"
         max-width="600"
         @update:model-value="(v) => !v && emit('cancel')"
+        content-class="dialog-bottom"
+        scrim="black"
     >
-        <v-card class="rounded-xl">
+        <v-card class="dialog-card">
             <v-card-title class="relative pt-6 text-center text-xl font-bold text-error">
-                ⚠️ Предупреждение о похожем адресе
+                Предупреждение о похожем адресе
 
                 <v-btn
                     icon
@@ -44,16 +48,15 @@ const differences = computed(() => {
             </v-card-title>
 
             <v-card-text class="px-6 py-4">
-                <v-alert type="error" variant="tonal" density="compact" class="mb-4">
+                <v-alert type="error" variant="tonal" density="compact" class="mb-4 rounded-xl!">
                     Этот адрес похож на адрес из вашей истории транзакций. Проверьте внимательно!
                 </v-alert>
 
                 <div class="flex flex-col gap-4">
-                    <!-- Введенный адрес -->
                     <div>
                         <p class="mb-2 text-sm font-semibold text-text-muted">Вы вводите:</p>
                         <div
-                            class="break-all rounded-lg bg-error-darken-1 px-3 py-2 font-mono text-sm"
+                            class="break-all rounded-xl bg-error-darken-1 px-3 py-2 font-mono text-sm"
                         >
                             <span
                                 v-for="(item, idx) in differences"
@@ -65,13 +68,12 @@ const differences = computed(() => {
                         </div>
                     </div>
 
-                    <!-- Похожий адрес из истории -->
                     <div>
                         <p class="mb-2 text-sm font-semibold text-text-muted">
                             Похожий адрес из истории:
                         </p>
                         <div
-                            class="break-all rounded-lg bg-surface-variant px-3 py-2 font-mono text-sm"
+                            class="break-all rounded-xl bg-surface-variant px-3 py-2 font-mono text-sm"
                         >
                             {{ similarAddress }}
                         </div>
@@ -84,25 +86,18 @@ const differences = computed(() => {
             </v-card-text>
 
             <v-card-actions class="flex flex-row gap-3 px-6 pb-6">
-                <v-btn
-                    color="primary"
-                    size="large"
-                    rounded="lg"
+                <ButtonAccent
+                    text="Отменить"
                     class="min-w-0 flex-1"
                     @click="emit('cancel')"
-                >
-                    Отменить
-                </v-btn>
+                />
 
-                <v-btn
-                    variant="outlined"
-                    size="large"
-                    rounded="lg"
-                    class="proceed-btn min-w-0 flex-1"
+                <ButtonError
+                    text="Продолжить"
+                    outlined
+                    class="min-w-0 flex-1"
                     @click="emit('proceed')"
-                >
-                    Продолжить всё равно
-                </v-btn>
+                />
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -117,17 +112,13 @@ const differences = computed(() => {
     opacity: 0.8;
 }
 
-.proceed-btn {
-    border: 1px solid rgb(var(--v-theme-error));
-    color: rgb(var(--v-theme-error)) !important;
+.dialog-card {
+    border-radius: 16px;
 }
 
-.proceed-btn :deep(.v-btn__overlay) {
-    display: none;
-}
-
-.proceed-btn:hover {
-    background-color: rgb(var(--v-theme-error));
-    color: #fff !important;
+@media (max-width: 600px) {
+    .dialog-card {
+        border-radius: 16px 16px 0 0;
+    }
 }
 </style>

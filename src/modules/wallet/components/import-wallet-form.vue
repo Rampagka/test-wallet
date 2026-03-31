@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BackButton from '@/common/components/back-button.vue'
+import { ButtonAccent } from '@/common/ui'
 
 import { useImportWallet } from '@/modules/wallet/composables/useImportWallet.ts'
 
@@ -24,7 +25,7 @@ const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } =
             :key="index"
             :model-value="words[index]"
             :label="`${index + 1}`"
-            variant="outlined"
+            variant="underlined"
             density="compact"
             hide-details
             autocomplete="off"
@@ -39,23 +40,19 @@ const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } =
         v-if="error"
         type="error"
         variant="tonal"
-        class="mb-4 flex flex-0 gap-2 p-2"
+        class="mb-4 flex flex-0 gap-2 p-2 rounded-xl!"
         density="compact"
     >
         {{ error }}
     </v-alert>
 
     <div class="mt-auto">
-        <v-btn
-            color="primary"
-            size="large"
+        <ButtonAccent
+            text="Импортировать"
             block
-            rounded="lg"
             :disabled="!allFilled"
             :loading="isImporting"
             @click="importWallet"
-        >
-            Импортировать
-        </v-btn>
+        />
     </div>
 </template>

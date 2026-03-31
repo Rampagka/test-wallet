@@ -24,7 +24,7 @@ const {
 </script>
 
 <template>
-    <div class="min-h-screen">
+    <div class="pb-20">
         <v-container class="pa-4">
             <!-- Хедер -->
             <div class="mb-6 flex items-center">

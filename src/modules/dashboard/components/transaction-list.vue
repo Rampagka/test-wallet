@@ -6,7 +6,6 @@ import type { Transaction } from '@/modules/dashboard/models/types/transaction'
 defineProps<{
     transactions: Transaction[]
     isLoading: boolean
-    error: string | null
     searchQuery: string
 }>()
 
@@ -27,7 +26,7 @@ const emit = defineEmits<{
         <v-text-field
             :model-value="searchQuery"
             placeholder="Поиск..."
-            variant="outlined"
+            variant="underlined"
             density="compact"
             hide-details
             prepend-inner-icon="mdi-magnify"
@@ -41,19 +40,9 @@ const emit = defineEmits<{
                 v-for="i in 4"
                 :key="i"
                 type="list-item-avatar-two-line"
-                class="skeleton-item rounded-xl bg-transparent"
+                class="skeleton-item"
             />
         </div>
-
-        <v-alert
-            v-else-if="error"
-            type="error"
-            variant="tonal"
-            density="compact"
-            class="flex flex-0 gap-2 p-2"
-        >
-            {{ error }}
-        </v-alert>
 
         <div
             v-else-if="transactions.length === 0 && searchQuery.length > 0"
@@ -91,15 +80,19 @@ const emit = defineEmits<{
     margin-inline-end: 8px;
 }
 
-.skeleton-item :deep(.v-skeleton-loader__bone) {
-    margin-bottom: 4px;
+.skeleton-item {
+    background-color: transparent !important;
 }
 
-.skeleton-item :deep(.v-skeleton-loader__list-item-avatar-two-line) {
-    gap: 12px;
+.skeleton-item :deep(*) {
+    background-color: transparent !important;
 }
 
-.skeleton-item :deep(.v-skeleton-loader__sentences) {
-    gap: 6px;
+.skeleton-item :deep(.v-skeleton-loader__avatar) {
+    background-color: var(--color-bg-tertiary) !important;
+}
+
+.skeleton-item :deep(.v-skeleton-loader__text) {
+    background-color: var(--color-bg-tertiary) !important;
 }
 </style>

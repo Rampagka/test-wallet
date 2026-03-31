@@ -13,11 +13,11 @@ const {
     shortAddress,
     balanceFormatted,
     isBalanceLoading,
-    balanceError,
     transactions,
     isTransactionsLoading,
-    transactionsError,
     searchQuery,
+    isRefreshing,
+    refresh,
 } = useDashboard()
 
 function onCopy() {
@@ -26,22 +26,22 @@ function onCopy() {
 </script>
 
 <template>
-    <div class="flex min-h-dvh flex-col pb-20">
+    <div class="flex flex-col pb-20">
         <DashboardHeader
             :short-address="shortAddress"
             :full-address="address"
             :balance="balanceFormatted"
             :is-balance-loading="isBalanceLoading"
-            :balance-error="balanceError"
+            :is-refreshing="isRefreshing"
             @copy="onCopy"
             @send="router.push('/send')"
             @receive="router.push('/receive')"
+            @refresh="refresh"
         />
 
         <TransactionList
             :transactions="transactions"
             :is-loading="isTransactionsLoading"
-            :error="transactionsError"
             v-model:search-query="searchQuery"
             class="flex-1 px-4"
         />

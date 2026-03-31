@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ButtonAccent, ButtonSecondary } from '@/common/ui'
+
 import type { SendFormErrors } from '@/modules/send/models/types/send-form'
 
 interface Props {
@@ -24,19 +26,16 @@ const emit = defineEmits<{
 <template>
     <div class="flex flex-col gap-4">
         <!-- Баланс -->
-        <v-alert type="info" variant="tonal" density="compact" class="flex flex-0 gap-2 p-2">
-            <div class="flex items-center justify-between">
-                <span class="text-sm">Доступно:</span>
-                <span class="text-sm font-semibold">{{ balance }} TON</span>
-            </div>
-        </v-alert>
+        <p class="text-center text-base text-text-secondary">
+            Баланс: <span class="font-semibold text-text-primary">{{ balance }} TON</span>
+        </p>
 
         <!-- Адрес получателя -->
         <v-text-field
             :model-value="address"
             label="Адрес получателя"
             placeholder="UQA..."
-            variant="outlined"
+            variant="underlined"
             density="comfortable"
             :error-messages="errors.address"
             hide-details="auto"
@@ -44,12 +43,12 @@ const emit = defineEmits<{
         />
 
         <!-- Сумма -->
-        <div class="flex gap-2">
+        <div class="flex items-center gap-2">
             <v-text-field
                 :model-value="amount"
                 label="Сумма"
                 placeholder="0.00"
-                variant="outlined"
+                variant="underlined"
                 density="comfortable"
                 type="number"
                 suffix="TON"
@@ -59,15 +58,11 @@ const emit = defineEmits<{
                 @update:model-value="(v: string) => emit('update:amount', v)"
             />
 
-            <v-btn
-                variant="tonal"
-                size="large"
-                rounded="lg"
-                class="max-btn h-[48px]!"
+            <ButtonSecondary
+                text="Макс"
+                class="h-[48px]! min-w-[80px]"
                 @click="emit('setMaxAmount')"
-            >
-                Макс
-            </v-btn>
+            />
         </div>
 
         <!-- Комментарий (опционально) -->
@@ -75,38 +70,20 @@ const emit = defineEmits<{
             :model-value="comment"
             label="Комментарий (необязательно)"
             placeholder="Для чего перевод..."
-            variant="outlined"
+            variant="underlined"
             density="comfortable"
             hide-details
             @update:model-value="(v: string) => emit('update:comment', v)"
         />
 
         <!-- Кнопка отправки -->
-        <v-btn
-            color="primary"
-            size="large"
+        <ButtonAccent
+            text="Отправить"
             block
-            rounded="lg"
             :loading="isLoading"
             :disabled="!address || !amount"
             class="mt-2"
             @click="emit('submit')"
-        >
-            Отправить
-        </v-btn>
+        />
     </div>
 </template>
-
-<style scoped>
-.max-btn {
-    min-width: 80px;
-}
-
-.max-btn :deep(.v-btn__overlay) {
-    display: none;
-}
-
-.max-btn:hover {
-    opacity: 0.8;
-}
-</style>

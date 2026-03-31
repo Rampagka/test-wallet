@@ -14,13 +14,21 @@ const tabs: NavTab[] = [
     { name: 'Contacts', route: '/contacts', icon: 'mdi-account-group', label: 'Контакты' },
 ]
 
-const activeTab = computed(() => tabs.findIndex((tab) => tab.route === route.path))
+const activeTab = computed(() => {
+    const found = tabs.find((tab) => tab.route === route.path)
+    return found?.name ?? null
+})
 
-function onTabClick(index: number) {
-    const tab = tabs[index]
+function onTabClick(name: string | null) {
+    if (!name) return
+    const tab = tabs.find((t) => t.name === name)
     if (tab) {
         router.push(tab.route)
     }
+}
+
+function isActive(tabName: string) {
+    return activeTab.value === tabName
 }
 </script>
 
@@ -31,9 +39,15 @@ function onTabClick(index: number) {
         class="nav-bar"
         @update:model-value="onTabClick"
     >
-        <v-btn v-for="tab in tabs" :key="tab.name" :value="tab.name" class="nav-btn">
+        <v-btn
+            v-for="tab in tabs"
+            :key="tab.name"
+            :value="tab.name"
+            class="nav-btn"
+            :class="{ 'nav-btn--active': isActive(tab.name) }"
+        >
             <v-icon>{{ tab.icon }}</v-icon>
-            <span>{{ tab.label }}</span>
+            <span class="nav-btn__label">{{ tab.label }}</span>
         </v-btn>
     </v-bottom-navigation>
 </template>
@@ -50,5 +64,10 @@ function onTabClick(index: number) {
 .nav-btn:hover {
     opacity: 0.8;
     transition: 0.2s all ease;
+}
+
+.nav-btn--active :deep(.v-icon),
+.nav-btn--active .nav-btn__label {
+    color: var(--color-accent);
 }
 </style>

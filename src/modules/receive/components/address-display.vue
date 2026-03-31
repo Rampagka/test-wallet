@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ButtonAccent } from '@/common/ui'
+
 interface Props {
     address: string
     isCopied: boolean
@@ -16,23 +18,18 @@ const emit = defineEmits<{
         <v-card-title class="text-center text-subtitle-1 mb-4">Ваш адрес</v-card-title>
 
         <v-card-text>
-            <div class="mb-4 rounded-lg px-3 py-3">
+            <div class="mb-4 rounded-xl px-3 py-3">
                 <p class="break-all font-mono text-xl leading-relaxed text-on-surface">
                     {{ address }}
                 </p>
             </div>
 
-            <v-btn
-                rounded="lg"
+            <ButtonAccent
+                :text="isCopied ? 'Скопировали!' : 'Копируйте адрес'"
                 block
-                color="primary"
                 prepend-icon="mdi-content-copy"
-                class="gap-2"
-                size="large"
                 @click="emit('copy')"
-            >
-                {{ isCopied ? 'Скопировали!' : 'Копируйте адрес' }}
-            </v-btn>
+            />
         </v-card-text>
     </v-card>
 </template>

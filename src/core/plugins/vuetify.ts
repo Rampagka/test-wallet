@@ -20,4 +20,9 @@ export default createVuetify({
             },
         },
     },
+    defaults: {
+        VBtn: {
+            style: 'text-transform: none; letter-spacing: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;',
+        },
+    },
 })

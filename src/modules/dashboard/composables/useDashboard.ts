@@ -1,30 +1,55 @@
-import { usePolling } from '@/common/composables/usePolling'
-
-import {
-    BALANCE_POLLING_INTERVAL,
-    MIN_SEARCH_LENGTH,
-    TRANSACTION_POLLING_INTERVAL,
-} from '@/modules/dashboard/consts/dashboard'
+import { MIN_SEARCH_LENGTH } from '@/modules/dashboard/consts/dashboard'
 
 import { useDashboardStore } from '@/modules/dashboard/store/dashboard.store'
 import { useWalletStore } from '@/modules/wallet'
 
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+
+const RETRY_DELAY = 10_000
+
+function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 export function useDashboard() {
     const walletStore = useWalletStore()
     const dashboardStore = useDashboardStore()
 
     const searchQuery = ref('')
+    const isRefreshing = ref(false)
 
-    const { isLoading: isBalanceLoading } = usePolling({
-        fn: () => dashboardStore.fetchBalance(walletStore.address),
-        interval: BALANCE_POLLING_INTERVAL,
-    })
+    async function loadBalance(address: string) {
+        let success = false
+        while (!success) {
+            success = await dashboardStore.fetchBalance(address)
+            if (!success) await delay(RETRY_DELAY)
+        }
+    }
 
-    const { isLoading: isTransactionsLoading } = usePolling({
-        fn: () => dashboardStore.fetchTransactions(walletStore.address),
-        interval: TRANSACTION_POLLING_INTERVAL,
+    async function loadTransactions(address: string) {
+        let success = false
+        while (!success) {
+            success = await dashboardStore.fetchTransactions(address)
+            if (!success) await delay(RETRY_DELAY)
+        }
+    }
+
+    async function loadData() {
+        const address = walletStore.address
+        await loadBalance(address)
+        await loadTransactions(address)
+    }
+
+    async function refresh() {
+        isRefreshing.value = true
+        const address = walletStore.address
+        await dashboardStore.fetchBalance(address)
+        await dashboardStore.fetchTransactions(address)
+        isRefreshing.value = false
+    }
+
+    onMounted(() => {
+        loadData()
     })
 
     const filteredTransactions = computed(() => {
@@ -45,13 +70,13 @@ export function useDashboard() {
         shortAddress: computed(() => walletStore.shortAddress),
 
         balanceFormatted: computed(() => dashboardStore.balanceFormatted),
-        isBalanceLoading,
-        balanceError: computed(() => dashboardStore.balanceError),
+        isBalanceLoading: computed(() => !dashboardStore.balanceLoaded),
 
         transactions: filteredTransactions,
-        isTransactionsLoading,
-        transactionsError: computed(() => dashboardStore.transactionsError),
+        isTransactionsLoading: computed(() => !dashboardStore.transactionsLoaded),
 
         searchQuery,
+        isRefreshing,
+        refresh,
     }
 }

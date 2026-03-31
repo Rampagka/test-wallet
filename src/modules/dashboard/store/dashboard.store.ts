@@ -12,32 +12,28 @@ import { computed, ref } from 'vue'
 export const useDashboardStore = defineStore('dashboard', () => {
     const balanceNano = ref<bigint>(0n)
     const transactions = ref<Transaction[]>([])
-    const isBalanceLoading = ref(true)
-    const isTransactionsLoading = ref(true)
-    const balanceError = ref<string | null>(null)
-    const transactionsError = ref<string | null>(null)
+    const balanceLoaded = ref(false)
+    const transactionsLoaded = ref(false)
 
     const balanceFormatted = computed(() => formatTonAmount(fromNano(balanceNano.value)))
 
-    async function fetchBalance(address: string) {
+    async function fetchBalance(address: string): Promise<boolean> {
         try {
             balanceNano.value = await getBalance(address)
-            balanceError.value = null
-        } catch (e) {
-            balanceError.value = e instanceof Error ? e.message : 'Ошибка загрузки баланса'
-        } finally {
-            isBalanceLoading.value = false
+            balanceLoaded.value = true
+            return true
+        } catch {
+            return false
         }
     }
 
-    async function fetchTransactions(address: string, knownAddresses?: Set<string>) {
+    async function fetchTransactions(address: string, knownAddresses?: Set<string>): Promise<boolean> {
         try {
             transactions.value = await fetchTransactionsFromApi(address, knownAddresses)
-            transactionsError.value = null
-        } catch (e) {
-            transactionsError.value = e instanceof Error ? e.message : 'Ошибка загрузки транзакций'
-        } finally {
-            isTransactionsLoading.value = false
+            transactionsLoaded.value = true
+            return true
+        } catch {
+            return false
         }
     }
 
@@ -45,10 +41,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
         balanceNano,
         balanceFormatted,
         transactions,
-        isBalanceLoading,
-        isTransactionsLoading,
-        balanceError,
-        transactionsError,
+        balanceLoaded,
+        transactionsLoaded,
         fetchBalance,
         fetchTransactions,
     }

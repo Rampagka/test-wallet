@@ -7,7 +7,7 @@ const { address, copyAddress, isCopied } = useReceive()
 </script>
 
 <template>
-    <div class="min-h-screen pb-20">
+    <div class="pb-20">
         <v-container class="pa-4">
             <div class="mb-6 flex items-center">
                 <BackButton />

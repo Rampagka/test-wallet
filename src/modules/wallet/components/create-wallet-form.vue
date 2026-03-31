@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BackButton from '@/common/components/back-button.vue'
+import { ButtonAccent, ButtonSecondary } from '@/common/ui'
 
 import { useCreateWallet } from '@/modules/wallet/composables/useCreateWallet.ts'
 
@@ -20,7 +21,7 @@ const { words, isLoading, isCopied, isSaving, copyMnemonic, confirmSaved } = use
         <v-alert
             type="warning"
             variant="tonal"
-            class="mb-6 flex flex-0 gap-2 p-2"
+            class="mb-6 flex flex-0 gap-2 p-2 rounded-xl!"
             density="compact"
         >
             Запишите эту фразу и храните в безопасном месте. Она нужна для восстановления кошелька.
@@ -30,7 +31,7 @@ const { words, isLoading, isCopied, isSaving, copyMnemonic, confirmSaved } = use
             <div
                 v-for="(word, index) in words"
                 :key="index"
-                class="rounded-lg bg-bg-secondary px-3 py-2 text-sm"
+                class="rounded-xl bg-bg-secondary px-3 py-2 text-sm"
             >
                 <span class="mr-1 text-text-muted">{{ index + 1 }}.</span>
                 <span class="text-text-primary">{{ word }}</span>
@@ -38,34 +39,19 @@ const { words, isLoading, isCopied, isSaving, copyMnemonic, confirmSaved } = use
         </div>
 
         <div class="mt-auto flex flex-col gap-3">
-            <v-btn
-                variant="tonal"
-                size="large"
+            <ButtonSecondary
+                :text="isCopied ? 'Скопировано' : 'Скопировать'"
                 block
-                rounded="lg"
                 :prepend-icon="isCopied ? 'mdi-check' : 'mdi-content-copy'"
                 @click="copyMnemonic"
-                class="copy-btn gap-2"
-            >
-                {{ isCopied ? 'Скопировано' : 'Скопировать' }}
-            </v-btn>
+            />
 
-            <v-btn
-                color="primary"
-                size="large"
+            <ButtonAccent
+                text="Я сохранил фразу"
                 block
-                rounded="lg"
                 :loading="isSaving"
                 @click="confirmSaved"
-            >
-                Я сохранил фразу
-            </v-btn>
+            />
         </div>
     </template>
 </template>
-
-<style scoped>
-.copy-btn:hover :deep(.v-btn__overlay) {
-    opacity: 0.06 !important;
-}
-</style>

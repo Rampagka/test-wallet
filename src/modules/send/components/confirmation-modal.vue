@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ButtonAccent, ButtonError } from '@/common/ui'
+
 interface Props {
     isOpen: boolean
     to: string
@@ -20,8 +22,10 @@ const emit = defineEmits<{
         :model-value="isOpen"
         max-width="500"
         @update:model-value="(v) => !v && emit('cancel')"
+        content-class="dialog-bottom"
+        scrim="black"
     >
-        <v-card class="rounded-xl">
+        <v-card class="dialog-card">
             <div class="flex justify-between items-center py-4 px-6 text-center text-xl font-bold">
                 <h4>Подтверждение отправки</h4>
 
@@ -38,7 +42,6 @@ const emit = defineEmits<{
 
             <v-card-text class="px-6 py-4">
                 <div class="flex flex-col gap-4">
-                    <!-- Адрес получателя (полный, без сокращения) -->
                     <div>
                         <p class="mb-1 text-sm text-text-muted">Кому:</p>
                         <p class="break-all font-mono text-sm text-text-primary">
@@ -46,19 +49,16 @@ const emit = defineEmits<{
                         </p>
                     </div>
 
-                    <!-- Сумма -->
                     <div>
                         <p class="mb-1 text-sm text-text-muted">Сумма:</p>
-                        <p class="text-2xl font-bold text-primary">{{ amount }} TON</p>
+                        <p class="text-2xl font-bold text-accent">{{ amount }} TON</p>
                     </div>
 
-                    <!-- Комментарий -->
                     <div v-if="comment">
                         <p class="mb-1 text-sm text-text-muted">Комментарий:</p>
                         <p class="text-sm text-text-primary">{{ comment }}</p>
                     </div>
 
-                    <!-- Комиссия -->
                     <div>
                         <p class="mb-1 text-sm text-text-muted">Примерная комиссия:</p>
                         <p class="text-sm text-text-secondary">{{ fee }} TON</p>
@@ -67,25 +67,18 @@ const emit = defineEmits<{
             </v-card-text>
 
             <div class="flex flex-row gap-3 px-6 pb-6">
-                <v-btn
-                    variant="outlined"
-                    size="large"
-                    rounded="lg"
-                    class="cancel-btn min-w-0 flex-1"
+                <ButtonError
+                    text="Отмена"
+                    outlined
+                    class="min-w-0 flex-1"
                     @click="emit('cancel')"
-                >
-                    Отмена
-                </v-btn>
+                />
 
-                <v-btn
-                    color="primary"
-                    size="large"
-                    rounded="lg"
+                <ButtonAccent
+                    text="Подтвердить"
                     class="min-w-0 flex-1"
                     @click="emit('confirm')"
-                >
-                    Подтвердить
-                </v-btn>
+                />
             </div>
         </v-card>
     </v-dialog>
@@ -100,16 +93,25 @@ const emit = defineEmits<{
     opacity: 0.8;
 }
 
-.cancel-btn {
-    border: 1px solid rgb(var(--v-theme-primary));
-    color: #fff !important;
+.dialog-card {
+    border-radius: 16px;
 }
 
-.cancel-btn :deep(.v-btn__overlay) {
-    display: none;
+@media (max-width: 600px) {
+    .dialog-card {
+        border-radius: 16px 16px 0 0;
+    }
+}
+</style>
+
+<style>
+.dialog-bottom {
+    align-self: flex-end;
 }
 
-.cancel-btn:hover {
-    background-color: rgb(var(--v-theme-primary));
+@media (min-width: 601px) {
+    .dialog-bottom {
+        align-self: center;
+    }
 }
 </style>

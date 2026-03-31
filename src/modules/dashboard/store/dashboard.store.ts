@@ -37,6 +37,13 @@ export const useDashboardStore = defineStore('dashboard', () => {
         }
     }
 
+    function resetState() {
+        balanceNano.value = 0n
+        transactions.value = []
+        balanceLoaded.value = false
+        transactionsLoaded.value = false
+    }
+
     return {
         balanceNano,
         balanceFormatted,
@@ -45,5 +52,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
         transactionsLoaded,
         fetchBalance,
         fetchTransactions,
+        resetState,
     }
 })

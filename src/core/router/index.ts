@@ -20,7 +20,8 @@ router.beforeEach((to) => {
     }
 
     // If has wallet and on onboarding pages → redirect to Dashboard
-    if (hasWallet && to.meta.isPublic) {
+    // Exception: allow /create and /import with ?addAccount=true
+    if (hasWallet && to.meta.isPublic && to.query.addAccount !== 'true') {
         return { name: 'Dashboard' }
     }
 })

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import BackButton from '@/common/components/back-button.vue'
 
+import { useContactsStore } from '@/modules/contacts'
+import { useDashboard } from '@/modules/dashboard'
 import { ConfirmationModal, PoisoningWarningModal, SendForm, useSend } from '@/modules/send'
+
+const contactsStore = useContactsStore()
 
 const {
     formData,
@@ -21,10 +25,12 @@ const {
     cancelSend,
     setMaxAmount,
 } = useSend()
+
+const { isRefreshing } = useDashboard()
 </script>
 
 <template>
-    <div class="pb-20">
+    <div class="pb-2">
         <v-container class="pa-4">
             <!-- Хедер -->
             <div class="mb-6 flex items-center">
@@ -40,6 +46,7 @@ const {
                 :errors="errors"
                 :balance="balance"
                 :is-loading="isSending"
+                :contacts="contactsStore.contacts"
                 @submit="handleSubmit"
                 @set-max-amount="setMaxAmount"
             />

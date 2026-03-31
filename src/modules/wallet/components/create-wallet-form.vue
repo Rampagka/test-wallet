@@ -46,12 +46,7 @@ const { words, isLoading, isCopied, isSaving, copyMnemonic, confirmSaved } = use
                 @click="copyMnemonic"
             />
 
-            <ButtonAccent
-                text="Я сохранил фразу"
-                block
-                :loading="isSaving"
-                @click="confirmSaved"
-            />
+            <ButtonAccent text="Я сохранил фразу" block :loading="isSaving" @click="confirmSaved" />
         </div>
     </template>
 </template>

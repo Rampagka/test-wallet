@@ -1,5 +1,5 @@
 export const TRANSACTION_FETCH_LIMIT = 20
 
-export const DUST_THRESHOLD_NANO = '1000000'
+export const DUST_THRESHOLD_NANO = '100000000'
 
 export const MIN_SEARCH_LENGTH = 2

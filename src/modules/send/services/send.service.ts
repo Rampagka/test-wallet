@@ -1,3 +1,4 @@
+import { rateLimited } from '@/common/helpers/rate-limiter'
 import tonClient from '@/common/services/ton-client'
 
 import { SendMode, internal } from '@ton/core'
@@ -18,46 +19,43 @@ interface SendTransactionParams {
 export async function sendTransaction(params: SendTransactionParams): Promise<number> {
     const { mnemonic, to, amount, comment } = params
 
-    // Получаем ключевую пару из мнемоники
     const keyPair = await mnemonicToPrivateKey(mnemonic)
 
-    // Создаем wallet контракт
     const wallet = WalletContractV5R1.create({
         publicKey: keyPair.publicKey,
         workchain: 0,
-        walletId: { networkGlobalId: -3 }, // testnet
+        walletId: { networkGlobalId: -3 },
     })
 
-    // Открываем контракт через клиент
     const contract = tonClient.open(wallet)
 
-    // Получаем текущий seqno
-    const seqno = await contract.getSeqno()
+    // Rate-limited API calls
+    const seqno = await rateLimited(() => contract.getSeqno())
 
-    // Конвертируем сумму в nano
     const amountNano = BigInt(Math.floor(parseFloat(amount) * 1e9))
 
-    // Отправляем транзакцию
-    await contract.sendTransfer({
-        secretKey: keyPair.secretKey,
-        seqno,
-        sendMode: SendMode.PAY_GAS_SEPARATELY + SendMode.IGNORE_ERRORS,
-        messages: [
-            internal({
-                to,
-                value: amountNano,
-                bounce: false,
-                body: comment,
-            }),
-        ],
-    })
+    await rateLimited(() =>
+        contract.sendTransfer({
+            secretKey: keyPair.secretKey,
+            seqno,
+            sendMode: SendMode.PAY_GAS_SEPARATELY + SendMode.IGNORE_ERRORS,
+            messages: [
+                internal({
+                    to,
+                    value: amountNano,
+                    bounce: false,
+                    body: comment,
+                }),
+            ],
+        }),
+    )
 
     return seqno
 }
 
 /**
  * Ожидание подтверждения транзакции
- * Проверяет изменение seqno каждые 2 секунды
+ * Проверяет изменение seqno каждые 8 секунд
  */
 export async function waitForConfirmation(
     mnemonic: string[],
@@ -75,13 +73,13 @@ export async function waitForConfirmation(
     const startTime = Date.now()
 
     while (Date.now() - startTime < timeout) {
-        const currentSeqno = await contract.getSeqno()
+        const currentSeqno = await rateLimited(() => contract.getSeqno())
 
         if (currentSeqno > expectedSeqno) {
-            return // Транзакция подтверждена
+            return
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 5000))
+        await new Promise((resolve) => setTimeout(resolve, 8000))
     }
 
     throw new Error('Timeout waiting for transaction confirmation')

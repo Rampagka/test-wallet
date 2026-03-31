@@ -3,6 +3,8 @@ import { ButtonAccent, ButtonSecondary } from '@/common/ui'
 
 import type { SendFormErrors } from '@/modules/send/models/types/send-form'
 
+import type { Contact } from '@/modules/contacts'
+
 interface Props {
     address: string
     amount: string
@@ -10,6 +12,7 @@ interface Props {
     errors: SendFormErrors
     balance: string
     isLoading: boolean
+    contacts: Contact[]
 }
 
 defineProps<Props>()
@@ -26,21 +29,53 @@ const emit = defineEmits<{
 <template>
     <div class="flex flex-col gap-4">
         <!-- Баланс -->
-        <p class="text-center text-base text-text-secondary">
+        <p class="flex justify-between text-base mb-4">
             Баланс: <span class="font-semibold text-text-primary">{{ balance }} TON</span>
         </p>
 
         <!-- Адрес получателя -->
-        <v-text-field
-            :model-value="address"
-            label="Адрес получателя"
-            placeholder="UQA..."
-            variant="underlined"
-            density="comfortable"
-            :error-messages="errors.address"
-            hide-details="auto"
-            @update:model-value="(v: string) => emit('update:address', v)"
-        />
+        <div class="flex items-center gap-2">
+            <v-text-field
+                :model-value="address"
+                label="Адрес получателя"
+                placeholder="UQA..."
+                variant="underlined"
+                density="comfortable"
+                :error-messages="errors.address"
+                hide-details="auto"
+                class="flex-1"
+                @update:model-value="(v: string) => emit('update:address', v)"
+            />
+
+            <v-menu v-if="contacts.length > 0" location="bottom end">
+                <template #activator="{ props }">
+                    <button
+                        v-bind="props"
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-bg-secondary transition-opacity hover:opacity-80"
+                    >
+                        <v-icon size="20" color="secondary">mdi-account-box-outline</v-icon>
+                    </button>
+                </template>
+                <v-list
+                    density="compact"
+                    class="rounded-xl! bg-bg-secondary! max-h-64 overflow-y-auto"
+                >
+                    <v-list-item
+                        v-for="contact in contacts"
+                        :key="contact.id"
+                        @click="emit('update:address', contact.address)"
+                    >
+                        <template #prepend>
+                            <v-icon size="20" color="secondary">mdi-account</v-icon>
+                        </template>
+                        <v-list-item-title class="text-sm">{{ contact.name }}</v-list-item-title>
+                        <v-list-item-subtitle class="text-xs text-text-muted">
+                            {{ contact.address.slice(0, 6) }}...{{ contact.address.slice(-4) }}
+                        </v-list-item-subtitle>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </div>
 
         <!-- Сумма -->
         <div class="flex items-center gap-2">

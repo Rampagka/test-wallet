@@ -67,7 +67,7 @@ function handleSave(data: { name: string; address: string }) {
 </script>
 
 <template>
-    <div class="pb-20">
+    <div class="pb-2">
         <v-container class="pa-4">
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-xl font-bold">Контакты</h1>
@@ -104,11 +104,7 @@ function handleSave(data: { name: string; address: string }) {
                             @click="cancelDelete"
                         />
 
-                        <ButtonError
-                            text="Удалить"
-                            class="min-w-0 flex-1"
-                            @click="confirmDelete"
-                        />
+                        <ButtonError text="Удалить" class="min-w-0 flex-1" @click="confirmDelete" />
                     </div>
                 </v-card>
             </v-dialog>

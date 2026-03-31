@@ -3,10 +3,11 @@ import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
 import { useWalletStore } from '@/modules/wallet/store/wallet.store'
 
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export const useImportWallet = () => {
     const router = useRouter()
+    const route = useRoute()
     const walletStore = useWalletStore()
 
     const words = ref<string[]>(Array.from({ length: MNEMONIC_LENGTH }, () => ''))
@@ -14,6 +15,8 @@ export const useImportWallet = () => {
     const isImporting = ref(false)
 
     const allFilled = computed(() => words.value.every((w) => w.trim().length > 0))
+
+    const isAddAccount = () => route.query.addAccount === 'true'
 
     function onPaste(event: ClipboardEvent, index: number) {
         const text = event.clipboardData?.getData('text')?.trim()
@@ -55,6 +58,7 @@ export const useImportWallet = () => {
         error,
         isImporting,
         allFilled,
+        isAddAccount,
         onPaste,
         onInput,
         importWallet,

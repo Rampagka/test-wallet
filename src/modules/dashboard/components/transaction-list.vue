@@ -11,6 +11,7 @@ defineProps<{
 
 const emit = defineEmits<{
     'update:searchQuery': [value: string]
+    copy: []
 }>()
 </script>
 
@@ -66,6 +67,7 @@ const emit = defineEmits<{
                 :timestamp="tx.timestamp"
                 :comment="tx.comment"
                 :is-dust="tx.isDust"
+                @copy="emit('copy')"
             />
         </div>
     </div>

@@ -25,6 +25,6 @@ const showNavBar = computed(() => !route.meta.isPublic)
 .app-container {
     max-width: 428px;
     margin: 0 auto;
-    min-height: 100dvh;
+    min-height: calc(100dvh - 70px);
 }
 </style>

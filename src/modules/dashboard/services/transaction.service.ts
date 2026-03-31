@@ -1,5 +1,6 @@
 import { formatShortAddress } from '@/common/helpers/format-address'
 import { formatTonAmount } from '@/common/helpers/format-ton'
+import { rateLimited } from '@/common/helpers/rate-limiter'
 import tonClient from '@/common/services/ton-client'
 
 import type { Transaction } from '@/modules/dashboard/models/types/transaction'
@@ -15,9 +16,11 @@ export async function getTransactions(
     knownAddresses: Set<string> = new Set(),
 ): Promise<Transaction[]> {
     const address = Address.parse(addressStr)
-    const rawTxs = await tonClient.getTransactions(address, {
-        limit: TRANSACTION_FETCH_LIMIT,
-    })
+    const rawTxs = await rateLimited(() =>
+        tonClient.getTransactions(address, {
+            limit: TRANSACTION_FETCH_LIMIT,
+        }),
+    )
     return rawTxs.map((tx) => parseTransaction(tx, addressStr, knownAddresses))
 }
 

@@ -8,6 +8,7 @@ import {
 
 import { sendTransaction, waitForConfirmation } from '@/modules/send/services/send.service'
 
+import { useContactsStore } from '@/modules/contacts'
 import { useDashboardStore } from '@/modules/dashboard'
 import { useWalletStore } from '@/modules/wallet'
 
@@ -19,6 +20,7 @@ export function useSend() {
     const router = useRouter()
     const walletStore = useWalletStore()
     const dashboardStore = useDashboardStore()
+    const contactsStore = useContactsStore()
 
     // Состояние формы
     const formData = ref<SendFormData>({
@@ -45,9 +47,11 @@ export function useSend() {
 
     const estimatedFee = '0.01' // Примерная комиссия в TON
 
-    // Список адресов из истории для проверки address poisoning
-    const transactionAddresses = computed(() => {
-        return dashboardStore.transactions.map((tx) => tx.address)
+    // Адреса из истории + контактов для проверки address poisoning
+    const knownAddresses = computed(() => {
+        const txAddresses = dashboardStore.transactions.map((tx) => tx.address)
+        const contactAddresses = contactsStore.contacts.map((c) => c.address)
+        return [...txAddresses, ...contactAddresses]
     })
 
     /**
@@ -97,7 +101,7 @@ export function useSend() {
         // Address poisoning
         const { isSimilar, matchedAddress } = isSimilarAddress(
             formData.value.address,
-            transactionAddresses.value,
+            knownAddresses.value,
         )
         if (isSimilar && matchedAddress) {
             warnings.push('ADDRESS_POISONING')

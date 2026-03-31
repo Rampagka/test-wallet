@@ -3,7 +3,7 @@ import TransactionItem from '@/modules/dashboard/components/transaction-item.vue
 
 import type { Transaction } from '@/modules/dashboard/models/types/transaction'
 
-const props = defineProps<{
+defineProps<{
     transactions: Transaction[]
     isLoading: boolean
     error: string | null

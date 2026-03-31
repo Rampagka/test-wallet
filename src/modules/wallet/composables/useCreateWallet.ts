@@ -1,7 +1,8 @@
-import { generateMnemonic, useWalletStore } from '@/modules/wallet'
-
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { generateMnemonic } from '@/modules/wallet/services/wallet.service'
+import { useWalletStore } from '@/modules/wallet/store/wallet.store'
 
 export const useCreateWallet = () => {
     const router = useRouter()

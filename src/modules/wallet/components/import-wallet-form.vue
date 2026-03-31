@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BackButton from '@/common/components/back-button.vue'
+
 import { useImportWallet } from '@/modules/wallet/composables/useImportWallet.ts'
 
 import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
@@ -11,9 +13,7 @@ const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } =
 
 <template>
     <div class="mb-6 flex items-center">
-        <v-btn icon variant="text" size="small" class="back-btn" @click="router.push('/')">
-            <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+        <BackButton />
         <h1 class="ml-2 text-xl font-bold">Импорт кошелька</h1>
     </div>
 
@@ -62,13 +62,3 @@ const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } =
         </v-btn>
     </div>
 </template>
-
-<style scoped>
-.back-btn :deep(.v-btn__overlay) {
-    display: none;
-}
-
-.back-btn:hover {
-    opacity: 0.8;
-}
-</style>

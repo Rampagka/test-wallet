@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BackButton from '@/common/components/back-button.vue'
+
 import { useCreateWallet } from '@/modules/wallet/composables/useCreateWallet.ts'
 
 import { useRouter } from 'vue-router'
@@ -9,9 +11,7 @@ const router = useRouter()
 
 <template>
     <div class="mb-6 flex items-center">
-        <v-btn icon variant="text" size="small" class="back-btn" @click="router.push('/')">
-            <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+        <BackButton />
         <h1 class="ml-2 text-xl font-bold">Новый кошелёк</h1>
     </div>
 
@@ -68,14 +68,6 @@ const router = useRouter()
 </template>
 
 <style scoped>
-.back-btn :deep(.v-btn__overlay) {
-    display: none;
-}
-
-.back-btn:hover {
-    opacity: 0.8;
-}
-
 .copy-btn:hover :deep(.v-btn__overlay) {
     opacity: 0.06 !important;
 }

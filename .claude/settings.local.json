@@ -6,7 +6,8 @@
       "WebFetch(domain:github.com)",
       "Bash(npm view:*)",
       "Bash(find:*)",
-      "Bash(npx vue-tsc:*)"
+      "Bash(npx vue-tsc:*)",
+      "Bash(npm run type-check:*)"
     ]
   }
 }

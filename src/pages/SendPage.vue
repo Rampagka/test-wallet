@@ -1,11 +1,78 @@
 <script setup lang="ts">
+import BackButton from '@/common/components/back-button.vue'
 
+import { ConfirmationModal, PoisoningWarningModal, SendForm, useSend } from '@/modules/send'
+
+const {
+    formData,
+    errors,
+    balance,
+    estimatedFee,
+    isConfirmationModalOpen,
+    isPoisoningWarningModalOpen,
+    similarAddressFound,
+    isSending,
+    sendSuccess,
+    sendError,
+    handleSubmit,
+    proceedAfterPoisoningWarning,
+    cancelPoisoningWarning,
+    confirmSend,
+    cancelSend,
+    setMaxAmount,
+} = useSend()
 </script>
 
 <template>
-    <div />
+    <div class="min-h-screen">
+        <v-container class="pa-4">
+            <!-- Хедер -->
+            <div class="mb-6 flex items-center">
+                <BackButton />
+                <h1 class="ml-2 text-xl font-bold">Отправить ТОН</h1>
+            </div>
+
+            <!-- Форма отправки -->
+            <SendForm
+                v-model:address="formData.address"
+                v-model:amount="formData.amount"
+                v-model:comment="formData.comment"
+                :errors="errors"
+                :balance="balance"
+                :is-loading="isSending"
+                @submit="handleSubmit"
+                @set-max-amount="setMaxAmount"
+            />
+
+            <!-- Модал подтверждения -->
+            <ConfirmationModal
+                :is-open="isConfirmationModalOpen"
+                :to="formData.address"
+                :amount="formData.amount"
+                :comment="formData.comment"
+                :fee="estimatedFee"
+                @confirm="confirmSend"
+                @cancel="cancelSend"
+            />
+
+            <!-- Модал предупреждения о poisoning -->
+            <PoisoningWarningModal
+                :is-open="isPoisoningWarningModalOpen"
+                :entered-address="formData.address"
+                :similar-address="similarAddressFound"
+                @proceed="proceedAfterPoisoningWarning"
+                @cancel="cancelPoisoningWarning"
+            />
+
+            <!-- Snackbar успешной отправки -->
+            <v-snackbar v-model="sendSuccess" :timeout="2000" color="success">
+                Транзакция отправлена успешно!
+            </v-snackbar>
+
+            <!-- Snackbar ошибки -->
+            <v-snackbar :model-value="!!sendError" :timeout="5000" color="error">
+                {{ sendError }}
+            </v-snackbar>
+        </v-container>
+    </div>
 </template>
-
-<style scoped>
-
-</style>

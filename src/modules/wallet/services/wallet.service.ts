@@ -1,10 +1,7 @@
+import { TON_NETWORK_GLOBAL_ID, TON_WORKCHAIN } from '@/modules/wallet/consts/ton-config'
+
 import { mnemonicNew, mnemonicToPrivateKey, mnemonicValidate } from '@ton/crypto'
 import { WalletContractV5R1 } from '@ton/ton'
-
-import {
-    TON_NETWORK_GLOBAL_ID,
-    TON_WORKCHAIN,
-} from '@/modules/wallet/consts/ton-config'
 
 export async function generateMnemonic(): Promise<string[]> {
     return mnemonicNew()

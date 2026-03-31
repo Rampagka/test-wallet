@@ -1,10 +1,7 @@
+import { deriveWalletAddress, validateMnemonic } from '@/modules/wallet/services/wallet.service'
+
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-
-import {
-    deriveWalletAddress,
-    validateMnemonic,
-} from '@/modules/wallet/services/wallet.service'
 
 export const useWalletStore = defineStore(
     'wallet',

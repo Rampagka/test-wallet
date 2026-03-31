@@ -3,10 +3,7 @@ import BackButton from '@/common/components/back-button.vue'
 
 import { useCreateWallet } from '@/modules/wallet/composables/useCreateWallet.ts'
 
-import { useRouter } from 'vue-router'
-
 const { words, isLoading, isCopied, isSaving, copyMnemonic, confirmSaved } = useCreateWallet()
-const router = useRouter()
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { NavBar } from '@/modules/nav-bar'
+
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-
-import { NavBar } from '@/modules/nav-bar'
 
 const route = useRoute()
 

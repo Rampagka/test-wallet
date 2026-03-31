@@ -5,9 +5,6 @@ import { useImportWallet } from '@/modules/wallet/composables/useImportWallet.ts
 
 import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
 
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } = useImportWallet()
 </script>
 

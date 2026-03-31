@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import { formatTransactionTime } from '@/common/helpers/format-time'
 
 import type { TransactionDirection } from '@/modules/dashboard/models/types/transaction-direction'
+
+import { computed } from 'vue'
 
 const props = defineProps<{
     direction: TransactionDirection
@@ -18,16 +18,11 @@ const isIncoming = computed(() => props.direction === 'in')
 
 const formattedTime = computed(() => formatTransactionTime(props.timestamp))
 
-const amountDisplay = computed(() =>
-    isIncoming.value ? `+${props.amount}` : `-${props.amount}`,
-)
+const amountDisplay = computed(() => (isIncoming.value ? `+${props.amount}` : `-${props.amount}`))
 </script>
 
 <template>
-    <div
-        class="flex items-center gap-3 rounded-xl px-3 py-3"
-        :class="isDust ? 'bg-warning/5' : ''"
-    >
+    <div class="flex items-center gap-3 rounded-xl px-3 py-3" :class="isDust ? 'bg-warning/5' : ''">
         <div
             class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
             :class="isIncoming ? 'bg-success/15' : 'bg-bg-tertiary'"
@@ -44,12 +39,7 @@ const amountDisplay = computed(() =>
                 <span class="truncate text-sm text-text-primary">
                     {{ shortAddress }}
                 </span>
-                <v-icon
-                    v-if="isDust"
-                    icon="mdi-alert-circle-outline"
-                    color="warning"
-                    size="14"
-                />
+                <v-icon v-if="isDust" icon="mdi-alert-circle-outline" color="warning" size="14" />
             </div>
             <p v-if="comment" class="truncate text-xs text-text-muted">
                 {{ comment }}

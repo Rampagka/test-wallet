@@ -1,15 +1,15 @@
-import { computed, ref } from 'vue'
-
 import { usePolling } from '@/common/composables/usePolling'
-
-import { useWalletStore } from '@/modules/wallet'
 
 import {
     BALANCE_POLLING_INTERVAL,
     MIN_SEARCH_LENGTH,
     TRANSACTION_POLLING_INTERVAL,
 } from '@/modules/dashboard/consts/dashboard'
+
 import { useDashboardStore } from '@/modules/dashboard/store/dashboard.store'
+import { useWalletStore } from '@/modules/wallet'
+
+import { computed, ref } from 'vue'
 
 export function useDashboard() {
     const walletStore = useWalletStore()

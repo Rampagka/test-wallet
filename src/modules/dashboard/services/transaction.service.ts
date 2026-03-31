@@ -1,16 +1,14 @@
-import { Address, type Cell, fromNano } from '@ton/core'
-import type { Transaction as RawTransaction } from '@ton/ton'
-
 import { formatShortAddress } from '@/common/helpers/format-address'
 import { formatTonAmount } from '@/common/helpers/format-ton'
 import tonClient from '@/common/services/ton-client'
 
-import {
-    DUST_THRESHOLD_NANO,
-    TRANSACTION_FETCH_LIMIT,
-} from '@/modules/dashboard/consts/dashboard'
 import type { Transaction } from '@/modules/dashboard/models/types/transaction'
 import type { TransactionDirection } from '@/modules/dashboard/models/types/transaction-direction'
+
+import { DUST_THRESHOLD_NANO, TRANSACTION_FETCH_LIMIT } from '@/modules/dashboard/consts/dashboard'
+
+import { Address, type Cell, fromNano } from '@ton/core'
+import type { Transaction as RawTransaction } from '@ton/ton'
 
 export async function getTransactions(
     addressStr: string,
@@ -57,8 +55,7 @@ function parseTransaction(
         }
     }
 
-    const body =
-        direction === 'in' ? inMsg?.body : tx.outMessages.values()[0]?.body
+    const body = direction === 'in' ? inMsg?.body : tx.outMessages.values()[0]?.body
     const comment = parseComment(body)
 
     const amount = formatTonAmount(fromNano(BigInt(amountNano)))
@@ -76,9 +73,7 @@ function parseTransaction(
         timestamp,
         direction,
         address: counterpartyAddress,
-        shortAddress: counterpartyAddress
-            ? formatShortAddress(counterpartyAddress)
-            : 'Неизвестно',
+        shortAddress: counterpartyAddress ? formatShortAddress(counterpartyAddress) : 'Неизвестно',
         amount,
         amountNano,
         comment,

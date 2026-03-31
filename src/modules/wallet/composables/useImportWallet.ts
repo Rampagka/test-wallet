@@ -1,8 +1,9 @@
+import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
+
+import { useWalletStore } from '@/modules/wallet/store/wallet.store'
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-
-import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
-import { useWalletStore } from '@/modules/wallet/store/wallet.store'
 
 export const useImportWallet = () => {
     const router = useRouter()

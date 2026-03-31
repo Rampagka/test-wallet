@@ -3,9 +3,6 @@ import BackButton from '@/common/components/back-button.vue'
 
 import { AddressDisplay, QrCodeCard, useReceive } from '@/modules/receive'
 
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 const { address, copyAddress, isCopied } = useReceive()
 </script>
 

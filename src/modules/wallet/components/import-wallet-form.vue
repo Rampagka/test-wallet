@@ -1,0 +1,74 @@
+<script setup lang="ts">
+import { useImportWallet } from '@/modules/wallet/composables/useImportWallet.ts'
+
+import { MNEMONIC_LENGTH } from '@/modules/wallet/consts/mnemonic.ts'
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const { words, error, allFilled, isImporting, importWallet, onPaste, onInput } = useImportWallet()
+</script>
+
+<template>
+    <div class="mb-6 flex items-center">
+        <v-btn icon variant="text" size="small" class="back-btn" @click="router.push('/')">
+            <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        <h1 class="ml-2 text-xl font-bold">Импорт кошелька</h1>
+    </div>
+
+    <p class="mb-6 text-sm text-text-secondary">
+        Введите {{ MNEMONIC_LENGTH }} слова вашей секретной фразы для восстановления кошелька.
+    </p>
+
+    <div class="mb-6 grid grid-cols-3 gap-2">
+        <v-text-field
+            v-for="(_, index) in words"
+            :key="index"
+            :model-value="words[index]"
+            :label="`${index + 1}`"
+            variant="outlined"
+            density="compact"
+            hide-details
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            @update:model-value="(v: string) => onInput(v, index)"
+            @paste="(e: ClipboardEvent) => onPaste(e, index)"
+        />
+    </div>
+
+    <v-alert
+        v-if="error"
+        type="error"
+        variant="tonal"
+        class="mb-4 flex flex-0 gap-2 p-2"
+        density="compact"
+    >
+        {{ error }}
+    </v-alert>
+
+    <div class="mt-auto">
+        <v-btn
+            color="primary"
+            size="large"
+            block
+            rounded="lg"
+            :disabled="!allFilled"
+            :loading="isImporting"
+            @click="importWallet"
+        >
+            Импортировать
+        </v-btn>
+    </div>
+</template>
+
+<style scoped>
+.back-btn :deep(.v-btn__overlay) {
+    display: none;
+}
+
+.back-btn:hover {
+    opacity: 0.8;
+}
+</style>

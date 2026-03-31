@@ -1,11 +1,9 @@
 <script setup lang="ts">
-
+import { CreateWalletForm } from '@/modules/wallet/'
 </script>
 
 <template>
-    <div />
+    <div class="flex min-h-dvh flex-col px-4 py-6">
+        <CreateWalletForm />
+    </div>
 </template>
-
-<style scoped>
-
-</style>

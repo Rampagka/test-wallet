@@ -37,4 +37,9 @@ export const appRoutes: RouteRecordRaw[] = [
         name: 'Receive',
         component: () => import('@/pages/ReceivePage.vue'),
     },
+    {
+        path: '/contacts',
+        name: 'Contacts',
+        component: () => import('@/pages/ContactsPage.vue'),
+    },
 ]

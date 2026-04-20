@@ -53,6 +53,13 @@ export async function sendTransaction(params: SendTransactionParams): Promise<nu
     return seqno
 }
 
+export class ConfirmationTimeoutError extends Error {
+    constructor() {
+        super('Confirmation timeout')
+        this.name = 'ConfirmationTimeoutError'
+    }
+}
+
 /**
  * Ожидание подтверждения транзакции
  * Проверяет изменение seqno каждые 8 секунд
@@ -82,5 +89,5 @@ export async function waitForConfirmation(
         await new Promise((resolve) => setTimeout(resolve, 8000))
     }
 
-    throw new Error('Timeout waiting for transaction confirmation')
+    throw new ConfirmationTimeoutError()
 }

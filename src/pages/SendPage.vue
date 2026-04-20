@@ -18,6 +18,7 @@ const {
     activeWarnings,
     isSending,
     sendSuccess,
+    sendPending,
     sendError,
     handleSubmit,
     proceedAfterPoisoningWarning,
@@ -76,6 +77,17 @@ useDashboard()
             <!-- Snackbar успешной отправки -->
             <v-snackbar v-model="sendSuccess" :timeout="2000" color="success">
                 Транзакция отправлена успешно!
+            </v-snackbar>
+
+            <!-- Snackbar pending — транзакция ушла, но подтверждение затянулось -->
+            <v-snackbar v-model="sendPending" :timeout="4000" color="warning">
+                Транзакция отправлена, подтверждение затянулось. Проверьте
+                <a
+                    href="https://testnet.tonscan.org"
+                    target="_blank"
+                    rel="noopener"
+                    class="font-semibold underline"
+                >TonScan</a>.
             </v-snackbar>
 
             <!-- Snackbar ошибки -->

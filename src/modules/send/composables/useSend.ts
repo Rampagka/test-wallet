@@ -7,7 +7,11 @@ import {
     isValidTonAddress,
 } from '@/modules/send/helpers/address-validation'
 
-import { sendTransaction, waitForConfirmation } from '@/modules/send/services/send.service'
+import {
+    ConfirmationTimeoutError,
+    sendTransaction,
+    waitForConfirmation,
+} from '@/modules/send/services/send.service'
 
 import { useContactsStore } from '@/modules/contacts'
 import { useDashboardStore } from '@/modules/dashboard'
@@ -41,6 +45,7 @@ export function useSend() {
     // Состояния отправки
     const isSending = ref(false)
     const sendSuccess = ref(false)
+    const sendPending = ref(false)
     const sendError = ref('')
 
     // Вычисляемые значения
@@ -180,6 +185,7 @@ export function useSend() {
         isSending.value = true
         sendError.value = ''
         sendSuccess.value = false
+        sendPending.value = false
 
         try {
             const seqno = await sendTransaction({
@@ -189,22 +195,29 @@ export function useSend() {
                 comment: formData.value.comment || undefined,
             })
 
-            // Ждем подтверждения
             await waitForConfirmation(walletStore.mnemonic, seqno)
 
             sendSuccess.value = true
 
-            // Обновляем баланс и транзакции
             await dashboardStore.fetchBalance(walletStore.address)
             await dashboardStore.fetchTransactions(walletStore.address)
 
-            // Перенаправляем на dashboard через 2 секунды
             setTimeout(() => {
                 router.push('/dashboard')
             }, 2000)
         } catch (error) {
-            sendError.value =
-                error instanceof Error ? error.message : 'Ошибка при отправке транзакции'
+            if (error instanceof ConfirmationTimeoutError) {
+                // Транзакция отправлена, но подтверждение затянулось — не показываем ошибку
+                sendPending.value = true
+                await dashboardStore.fetchBalance(walletStore.address)
+                await dashboardStore.fetchTransactions(walletStore.address)
+                setTimeout(() => {
+                    router.push('/dashboard')
+                }, 4000)
+            } else {
+                sendError.value =
+                    error instanceof Error ? error.message : 'Ошибка при отправке транзакции'
+            }
         } finally {
             isSending.value = false
         }
@@ -237,6 +250,7 @@ export function useSend() {
         activeWarnings,
         isSending,
         sendSuccess,
+        sendPending,
         sendError,
         handleSubmit,
         proceedAfterPoisoningWarning,

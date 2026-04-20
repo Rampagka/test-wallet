@@ -76,3 +76,18 @@ a {
 .v-btn .v-btn__prepend {
     margin-inline-end: 4px;
 }
+
+.v-snackbar {
+  padding-bottom: 65px;
+}
+
+.v-snackbar .v-snackbar__wrapper {
+  border-radius: 12px;
+  padding: 12px 20px;
+  min-width: auto;
+}
+
+.v-snackbar .v-snackbar__content {
+  padding: 0;
+  text-align: center;
+}

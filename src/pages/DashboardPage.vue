@@ -73,19 +73,4 @@ function onSwitchAccount(index: number) {
     </div>
 </template>
 
-<style>
-.copy-snackbar {
-    padding-bottom: 20px;
-}
-
-.copy-snackbar .v-snackbar__wrapper {
-    border-radius: 12px;
-    padding: 12px 20px;
-    min-width: auto;
-}
-
-.copy-snackbar .v-snackbar__content {
-    padding: 0;
-    text-align: center;
-}
-</style>
+<style></style>

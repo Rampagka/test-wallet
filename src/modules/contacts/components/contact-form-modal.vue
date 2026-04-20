@@ -107,28 +107,29 @@ function handleSave() {
                             autofocus
                             required
                         />
-
-                        <v-textarea
+                        <v-text-field
                             v-model="address"
                             label="TON адрес"
                             variant="underlined"
                             :rules="addressRules"
-                            rows="3"
-                            auto-grow
                             required
-                            hint="Введите полный адрес получателя"
                         />
+                        <!--                        <v-textarea-->
+                        <!--                            v-model="address"-->
+                        <!--                            label="TON адрес"-->
+                        <!--                            variant="underlined"-->
+                        <!--                            :rules="addressRules"-->
+                        <!--                            rows="3"-->
+                        <!--                            auto-grow-->
+                        <!--                            required-->
+                        <!--                            hint="Введите полный адрес получателя"-->
+                        <!--                        />-->
                     </div>
                 </v-form>
             </v-card-text>
 
             <div class="flex flex-row gap-3 px-6 pb-6">
-                <ButtonError
-                    text="Отмена"
-                    outlined
-                    class="min-w-0 flex-1"
-                    @click="handleClose"
-                />
+                <ButtonError text="Отмена" outlined class="min-w-0 flex-1" @click="handleClose" />
 
                 <ButtonAccent
                     :text="submitButtonText"

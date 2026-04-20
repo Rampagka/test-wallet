@@ -59,3 +59,17 @@ a {
 .v-field--focused .v-field__input::placeholder {
     opacity: 1;
 }
+/* Fields without a label (e.g. search) should always show placeholder */
+.v-field--no-label .v-field__input::placeholder {
+    opacity: 0.5;
+}
+
+/* Underlined inputs: use theme border color instead of default white */
+.v-field--variant-underlined .v-field__outline::before {
+    border-color: var(--color-border) !important;
+}
+
+/* v-btn with prepend icon: gap between icon and text */
+.v-btn .v-btn__prepend {
+    margin-inline-end: 4px;
+}

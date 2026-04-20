@@ -38,7 +38,7 @@ const isAddMenuOpen = ref(false)
                 <template #activator="{ props }">
                     <button
                         v-bind="props"
-                        class="flex items-center justify-center rounded-full bg-bg-secondary p-2 transition-opacity hover:opacity-80"
+                        class="flex items-center justify-center rounded-full bg-bg-secondary p-4 transition-opacity hover:opacity-80"
                     >
                         <v-icon size="18" color="secondary">mdi-plus</v-icon>
                     </button>
@@ -114,5 +114,16 @@ const isAddMenuOpen = ref(false)
 <style scoped>
 .v-list-item :deep(.v-list-item__overlay) {
     background: transparent !important;
+}
+
+/* Compact list-item layout in dropdown menus */
+:deep(.v-list-item) {
+    padding-inline: 12px !important;
+    min-height: 40px !important;
+}
+:deep(.v-list-item__prepend) {
+    min-width: 0 !important;
+    width: auto !important;
+    margin-inline-end: 10px !important;
 }
 </style>

@@ -40,7 +40,7 @@ const emit = defineEmits<{
                 label="Адрес получателя"
                 placeholder="UQA..."
                 variant="underlined"
-                density="comfortable"
+                density="default"
                 :error-messages="errors.address"
                 hide-details="auto"
                 class="flex-1"
@@ -84,7 +84,7 @@ const emit = defineEmits<{
                 label="Сумма"
                 placeholder="0.00"
                 variant="underlined"
-                density="comfortable"
+                density="default"
                 type="number"
                 suffix="TON"
                 :error-messages="errors.amount"
@@ -106,7 +106,7 @@ const emit = defineEmits<{
             label="Комментарий (необязательно)"
             placeholder="Для чего перевод..."
             variant="underlined"
-            density="comfortable"
+            density="default"
             hide-details
             @update:model-value="(v: string) => emit('update:comment', v)"
         />
@@ -122,3 +122,16 @@ const emit = defineEmits<{
         />
     </div>
 </template>
+
+<style scoped>
+/* Compact list-item layout in contacts dropdown */
+:deep(.v-list-item) {
+    padding-inline: 12px !important;
+    min-height: 40px !important;
+}
+:deep(.v-list-item__prepend) {
+    min-width: 0 !important;
+    width: auto !important;
+    margin-inline-end: 10px !important;
+}
+</style>

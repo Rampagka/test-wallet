@@ -49,3 +49,13 @@ a {
 .v-skeleton-loader {
     background-color: transparent !important;
 }
+
+/* Tailwind preflight sets ::placeholder { opacity: 1 } which breaks
+   Vuetify's floating label behavior (it hides the placeholder by default) */
+.v-field__input::placeholder {
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+.v-field--focused .v-field__input::placeholder {
+    opacity: 1;
+}

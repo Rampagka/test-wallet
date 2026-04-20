@@ -49,7 +49,7 @@ const emit = defineEmits<{
 
         <div v-else-if="isLoading" class="flex flex-col gap-2">
             <v-skeleton-loader
-                v-for="i in 4"
+                v-for="i in 8"
                 :key="i"
                 type="list-item-avatar-two-line"
                 class="skeleton-item"
@@ -105,10 +105,12 @@ const emit = defineEmits<{
 }
 
 .skeleton-item :deep(.v-skeleton-loader__avatar) {
+    margin-right: 10px;
     background-color: var(--color-bg-tertiary) !important;
 }
 
 .skeleton-item :deep(.v-skeleton-loader__text) {
+    margin-bottom: 6px;
     background-color: var(--color-bg-tertiary) !important;
 }
 </style>

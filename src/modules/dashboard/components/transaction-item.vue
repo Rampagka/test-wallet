@@ -54,7 +54,6 @@ const emit = defineEmits<{
                     {{ shortAddress }}
                 </span>
                 <button
-                    v-if="!isDust"
                     v-bind="props"
                     class="flex items-center justify-center rounded-full bg-bg-secondary p-1 transition-opacity hover:opacity-80"
                     @click="emit('copy', props.address)"

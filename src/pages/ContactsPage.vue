@@ -67,7 +67,7 @@ function handleSave(data: { name: string; address: string }) {
 </script>
 
 <template>
-    <div class="pb-2">
+    <div class="pb-2 px-4">
         <v-container class="pa-4">
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-xl font-bold">Контакты</h1>

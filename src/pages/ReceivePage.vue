@@ -14,7 +14,7 @@ const { address, copyAddress, isCopied } = useReceive()
                 <h1 class="ml-2 text-xl font-bold">Получить ТОН</h1>
             </div>
 
-            <div class="mx-auto max-w-[480px]">
+            <div class="mx-auto max-w-[480px] px-4">
                 <QrCodeCard :address="address" class="mb-4" />
 
                 <AddressDisplay :address="address" :is-copied="isCopied" @copy="copyAddress" />

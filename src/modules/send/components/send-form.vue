@@ -27,7 +27,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 p-4">
         <!-- Баланс -->
         <p class="flex justify-between text-base mb-4">
             Баланс: <span class="font-semibold text-text-primary">{{ balance }} TON</span>

@@ -12,7 +12,9 @@
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -21,6 +23,7 @@
     "@ton/crypto": "^3.3.0",
     "@ton/ton": "^16.2.0",
     "buffer": "^6.0.3",
+    "eslint-plugin-import-x": "^4.16.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.2.0",
     "qrcode.vue": "^3.8.0",
@@ -40,7 +43,6 @@
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-oxlint": "~1.57.0",
     "eslint-plugin-project-structure": "^3.14.2",
     "eslint-plugin-vue": "~10.8.0",
@@ -53,6 +55,7 @@
     "vite": "^8.0.3",
     "vite-plugin-node-polyfills": "^0.26.0",
     "vite-plugin-vue-devtools": "^8.1.1",
+    "vitest": "^4.1.4",
     "vue-tsc": "^3.2.6"
   },
   "engines": {

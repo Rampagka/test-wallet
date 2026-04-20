@@ -70,12 +70,9 @@ describe('isSimilarAddress', () => {
     })
 
     it('detects poisoning: same prefix+suffix but different middle', () => {
-        // Build a fake address string that shares first 6 and last 4 chars with BOUNCEABLE
         const prefix = BOUNCEABLE.slice(0, 6)
         const suffix = BOUNCEABLE.slice(-4)
-        const poisoned = prefix + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' + suffix
-        // Ensure total length matches so slice(-4) lines up
-        const padded = (prefix + 'X'.repeat(BOUNCEABLE.length - 10) + suffix)
+        const padded = prefix + 'X'.repeat(BOUNCEABLE.length - 10) + suffix
 
         const result = isSimilarAddress(BOUNCEABLE, [padded])
         expect(result.isSimilar).toBe(true)
@@ -107,22 +104,22 @@ describe('highlightDifferences', () => {
 
     it('marks differing characters correctly', () => {
         const result = highlightDifferences('ABCD', 'ABXD')
-        expect(result[0].isDifferent).toBe(false)
-        expect(result[1].isDifferent).toBe(false)
-        expect(result[2].isDifferent).toBe(true)
-        expect(result[3].isDifferent).toBe(false)
+        expect(result[0]!.isDifferent).toBe(false)
+        expect(result[1]!.isDifferent).toBe(false)
+        expect(result[2]!.isDifferent).toBe(true)
+        expect(result[3]!.isDifferent).toBe(false)
     })
 
     it('handles strings of different lengths', () => {
         const result = highlightDifferences('AB', 'ABCD')
         expect(result.length).toBe(4)
-        expect(result[2].isDifferent).toBe(true)
-        expect(result[3].isDifferent).toBe(true)
+        expect(result[2]!.isDifferent).toBe(true)
+        expect(result[3]!.isDifferent).toBe(true)
     })
 
     it('uses char from address1 when present, address2 otherwise', () => {
         const result = highlightDifferences('AB', 'ABCD')
-        expect(result[2].char).toBe('C')
-        expect(result[3].char).toBe('D')
+        expect(result[2]!.char).toBe('C')
+        expect(result[3]!.char).toBe('D')
     })
 })

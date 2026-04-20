@@ -14,6 +14,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
     const transactions = ref<Transaction[]>([])
     const balanceLoaded = ref(false)
     const transactionsLoaded = ref(false)
+    const balanceError = ref<string | null>(null)
+    const transactionsError = ref<string | null>(null)
 
     const balanceFormatted = computed(() => formatTonAmount(fromNano(balanceNano.value)))
 
@@ -21,8 +23,10 @@ export const useDashboardStore = defineStore('dashboard', () => {
         try {
             balanceNano.value = await getBalance(address)
             balanceLoaded.value = true
+            balanceError.value = null
             return true
-        } catch {
+        } catch (e) {
+            balanceError.value = e instanceof Error ? e.message : 'Ошибка загрузки баланса'
             return false
         }
     }
@@ -31,8 +35,10 @@ export const useDashboardStore = defineStore('dashboard', () => {
         try {
             transactions.value = await fetchTransactionsFromApi(address, knownAddresses)
             transactionsLoaded.value = true
+            transactionsError.value = null
             return true
-        } catch {
+        } catch (e) {
+            transactionsError.value = e instanceof Error ? e.message : 'Ошибка загрузки транзакций'
             return false
         }
     }
@@ -42,6 +48,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
         transactions.value = []
         balanceLoaded.value = false
         transactionsLoaded.value = false
+        balanceError.value = null
+        transactionsError.value = null
     }
 
     return {
@@ -50,6 +58,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
         transactions,
         balanceLoaded,
         transactionsLoaded,
+        balanceError,
+        transactionsError,
         fetchBalance,
         fetchTransactions,
         resetState,

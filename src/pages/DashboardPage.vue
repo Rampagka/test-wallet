@@ -15,11 +15,14 @@ const {
     shortAddress,
     balanceFormatted,
     isBalanceLoading,
+    isBalanceError,
     transactions,
     isTransactionsLoading,
+    isTransactionsError,
     searchQuery,
     isRefreshing,
     refresh,
+    retry,
 } = useDashboard()
 
 function onCopy(addr?: string) {
@@ -42,6 +45,7 @@ function onSwitchAccount(index: number) {
             :full-address="address"
             :balance="balanceFormatted"
             :is-balance-loading="isBalanceLoading"
+            :is-balance-error="isBalanceError"
             :is-refreshing="isRefreshing"
             :accounts="walletStore.accounts"
             :active-account-index="walletStore.activeIndex"
@@ -56,9 +60,11 @@ function onSwitchAccount(index: number) {
         <TransactionList
             :transactions="transactions"
             :is-loading="isTransactionsLoading"
+            :is-error="isTransactionsError"
             v-model:search-query="searchQuery"
             class="flex-1 px-4"
             @copy="(addr) => onCopy(addr)"
+            @retry="retry"
         />
 
         <v-snackbar v-model="isCopied" :timeout="2000" color="success" class="copy-snackbar">

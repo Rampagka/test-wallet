@@ -6,7 +6,8 @@ import { useWalletStore } from '@/modules/wallet'
 
 import { computed, onMounted, ref, watch } from 'vue'
 
-const RETRY_DELAY = 10_000
+const MAX_RETRIES = 3
+const RETRY_DELAY = 5_000
 
 function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -21,10 +22,10 @@ export function useDashboard() {
     const isRefreshing = ref(false)
 
     async function loadBalance(address: string) {
-        let success = false
-        while (!success) {
-            success = await dashboardStore.fetchBalance(address)
-            if (!success) await delay(RETRY_DELAY)
+        for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+            const success = await dashboardStore.fetchBalance(address)
+            if (success) return
+            if (attempt < MAX_RETRIES - 1) await delay(RETRY_DELAY)
         }
     }
 
@@ -33,17 +34,21 @@ export function useDashboard() {
     }
 
     async function loadTransactions(address: string) {
-        let success = false
-        while (!success) {
-            success = await dashboardStore.fetchTransactions(address, getKnownAddresses())
-            if (!success) await delay(RETRY_DELAY)
+        for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+            const success = await dashboardStore.fetchTransactions(address, getKnownAddresses())
+            if (success) return
+            if (attempt < MAX_RETRIES - 1) await delay(RETRY_DELAY)
         }
     }
 
     async function loadData() {
         const address = walletStore.address
-        await loadBalance(address)
-        await loadTransactions(address)
+        await Promise.all([loadBalance(address), loadTransactions(address)])
+    }
+
+    async function retry() {
+        dashboardStore.resetState()
+        await loadData()
     }
 
     async function refresh() {
@@ -87,13 +92,20 @@ export function useDashboard() {
         shortAddress: computed(() => walletStore.shortAddress),
 
         balanceFormatted: computed(() => dashboardStore.balanceFormatted),
-        isBalanceLoading: computed(() => !dashboardStore.balanceLoaded),
+        isBalanceLoading: computed(
+            () => !dashboardStore.balanceLoaded && !dashboardStore.balanceError,
+        ),
+        isBalanceError: computed(() => !!dashboardStore.balanceError),
 
         transactions: filteredTransactions,
-        isTransactionsLoading: computed(() => !dashboardStore.transactionsLoaded),
+        isTransactionsLoading: computed(
+            () => !dashboardStore.transactionsLoaded && !dashboardStore.transactionsError,
+        ),
+        isTransactionsError: computed(() => !!dashboardStore.transactionsError),
 
         searchQuery,
         isRefreshing,
         refresh,
+        retry,
     }
 }

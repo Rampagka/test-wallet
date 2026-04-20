@@ -12,6 +12,7 @@ defineProps<{
     fullAddress: string
     balance: string
     isBalanceLoading: boolean
+    isBalanceError?: boolean
     isRefreshing: boolean
     accounts: WalletAccount[]
     activeAccountIndex: number
@@ -104,7 +105,7 @@ const isAddMenuOpen = ref(false)
             </button>
         </div>
 
-        <BalanceCard :balance="balance" :is-loading="isBalanceLoading" />
+        <BalanceCard :balance="balance" :is-loading="isBalanceLoading" :is-error="isBalanceError" />
 
         <ActionButtons @send="emit('send')" @receive="emit('receive')" />
     </div>

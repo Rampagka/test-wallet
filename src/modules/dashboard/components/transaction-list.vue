@@ -6,12 +6,14 @@ import type { Transaction } from '@/modules/dashboard/models/types/transaction'
 defineProps<{
     transactions: Transaction[]
     isLoading: boolean
+    isError?: boolean
     searchQuery: string
 }>()
 
 const emit = defineEmits<{
     'update:searchQuery': [value: string]
     copy: [address: string]
+    retry: []
 }>()
 </script>
 
@@ -36,7 +38,21 @@ const emit = defineEmits<{
             class="search-field"
         />
 
-        <div v-if="isLoading" class="flex flex-col gap-2">
+        <div v-if="isError" class="flex flex-col items-center gap-3 py-8 text-center">
+            <v-icon size="40" color="error">mdi-wifi-off</v-icon>
+            <p class="text-sm text-text-muted">Не удалось загрузить транзакции</p>
+            <v-btn
+                variant="tonal"
+                color="accent"
+                size="small"
+                rounded="lg"
+                @click="emit('retry')"
+            >
+                Повторить
+            </v-btn>
+        </div>
+
+        <div v-else-if="isLoading" class="flex flex-col gap-2">
             <v-skeleton-loader
                 v-for="i in 4"
                 :key="i"

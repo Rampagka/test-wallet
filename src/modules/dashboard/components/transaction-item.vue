@@ -28,7 +28,7 @@ const emit = defineEmits<{
 
 <template>
     <div
-        class="flex items-center gap-3 rounded-xl px-3 py-3"
+        class="flex items-center gap-3 rounded-xl py-3"
         :class="isDust ? 'bg-warning/10 opacity-60' : ''"
     >
         <div

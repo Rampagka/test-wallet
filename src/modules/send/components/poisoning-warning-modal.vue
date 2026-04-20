@@ -48,7 +48,12 @@ const differences = computed(() => {
             </v-card-title>
 
             <v-card-text class="px-6 py-4">
-                <v-alert type="error" variant="tonal" density="compact" class="mb-4 rounded-xl!">
+                <v-alert
+                    type="error"
+                    variant="tonal"
+                    density="compact"
+                    class="mb-4 rounded-xl! alert"
+                >
                     Этот адрес похож на адрес из вашей истории транзакций. Проверьте внимательно!
                 </v-alert>
 
@@ -86,11 +91,7 @@ const differences = computed(() => {
             </v-card-text>
 
             <v-card-actions class="flex flex-row gap-3 px-6 pb-6">
-                <ButtonAccent
-                    text="Отменить"
-                    class="min-w-0 flex-1"
-                    @click="emit('cancel')"
-                />
+                <ButtonAccent text="Отменить" class="min-w-0 flex-1" @click="emit('cancel')" />
 
                 <ButtonError
                     text="Продолжить"
@@ -104,6 +105,13 @@ const differences = computed(() => {
 </template>
 
 <style scoped>
+.alert {
+    padding: 8px;
+}
+.alert :deep(.v-alert__prepend) {
+    margin-right: 8px;
+}
+
 .close-btn :deep(.v-btn__overlay) {
     display: none;
 }

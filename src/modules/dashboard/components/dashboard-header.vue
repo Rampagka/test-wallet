@@ -38,7 +38,7 @@ const isAddMenuOpen = ref(false)
                 <template #activator="{ props }">
                     <button
                         v-bind="props"
-                        class="flex items-center justify-center rounded-full bg-bg-secondary p-4 transition-opacity hover:opacity-80"
+                        class="flex items-center justify-center rounded-full bg-bg-secondary p-2 transition-opacity hover:opacity-80"
                     >
                         <v-icon size="18" color="secondary">mdi-plus</v-icon>
                     </button>

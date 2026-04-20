@@ -124,6 +124,11 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
+/* Push floating label higher — default translateY(-16px) is too close to input line */
+:deep(.v-field--variant-underlined .v-label.v-field-label--floating) {
+    transform: translateY(-24px) !important;
+}
+
 /* Compact list-item layout in contacts dropdown */
 :deep(.v-list-item) {
     padding-inline: 12px !important;

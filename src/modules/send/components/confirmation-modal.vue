@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ButtonAccent, ButtonError } from '@/common/ui'
 
-import { WARNING_MESSAGES, WARNING_TITLES } from '@/modules/send/consts/warnings'
 import type { WarningType } from '@/modules/send/models/types/warning-type'
+
+import { WARNING_MESSAGES, WARNING_TITLES } from '@/modules/send/consts/warnings'
 
 interface Props {
     isOpen: boolean
@@ -15,10 +16,14 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const CONFIRMATION_WARNINGS: WarningType[] = ['NEW_ADDRESS', 'BOUNCEABLE_ADDRESS', 'OWN_ADDRESS', 'ENTIRE_BALANCE']
+const CONFIRMATION_WARNINGS: WarningType[] = [
+    'NEW_ADDRESS',
+    'BOUNCEABLE_ADDRESS',
+    'OWN_ADDRESS',
+    'ENTIRE_BALANCE',
+]
 
-const activeAlerts = () =>
-    (props.warnings ?? []).filter((w) => CONFIRMATION_WARNINGS.includes(w))
+const activeAlerts = () => (props.warnings ?? []).filter((w) => CONFIRMATION_WARNINGS.includes(w))
 
 const emit = defineEmits<{
     confirm: []
@@ -57,7 +62,7 @@ const emit = defineEmits<{
                         :type="w === 'NEW_ADDRESS' ? 'warning' : 'error'"
                         variant="tonal"
                         density="compact"
-                        class="rounded-xl!"
+                        class="rounded-xl! alert"
                     >
                         <strong>{{ WARNING_TITLES[w] }}:</strong> {{ WARNING_MESSAGES[w] }}
                     </v-alert>
@@ -96,17 +101,20 @@ const emit = defineEmits<{
                     @click="emit('cancel')"
                 />
 
-                <ButtonAccent
-                    text="Подтвердить"
-                    class="min-w-0 flex-1"
-                    @click="emit('confirm')"
-                />
+                <ButtonAccent text="Подтвердить" class="min-w-0 flex-1" @click="emit('confirm')" />
             </div>
         </v-card>
     </v-dialog>
 </template>
 
 <style scoped>
+.alert {
+    padding: 8px;
+}
+.alert :deep(.v-alert__prepend) {
+    margin-right: 8px;
+}
+
 .close-btn :deep(.v-btn__overlay) {
     display: none;
 }

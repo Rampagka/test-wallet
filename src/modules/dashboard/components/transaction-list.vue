@@ -31,6 +31,7 @@ const emit = defineEmits<{
             placeholder="Поиск..."
             variant="underlined"
             density="compact"
+            :center-affix="true"
             hide-details
             prepend-inner-icon="mdi-magnify"
             clearable
@@ -41,13 +42,7 @@ const emit = defineEmits<{
         <div v-if="isError" class="flex flex-col items-center gap-3 py-8 text-center">
             <v-icon size="40" color="error">mdi-wifi-off</v-icon>
             <p class="text-sm text-text-muted">Не удалось загрузить транзакции</p>
-            <v-btn
-                variant="tonal"
-                color="accent"
-                size="small"
-                rounded="lg"
-                @click="emit('retry')"
-            >
+            <v-btn variant="tonal" color="accent" size="small" rounded="lg" @click="emit('retry')">
                 Повторить
             </v-btn>
         </div>
@@ -96,6 +91,8 @@ const emit = defineEmits<{
 }
 
 .search-field :deep(.v-field__prepend-inner) {
+    display: flex;
+    align-items: center;
     margin-inline-end: 8px;
 }
 

@@ -11,7 +11,7 @@ defineProps<{
 
 const emit = defineEmits<{
     'update:searchQuery': [value: string]
-    copy: []
+    copy: [address: string]
 }>()
 </script>
 
@@ -62,12 +62,13 @@ const emit = defineEmits<{
                 v-for="tx in transactions"
                 :key="tx.hash"
                 :direction="tx.direction"
+                :address="tx.address"
                 :short-address="tx.shortAddress"
                 :amount="tx.amount"
                 :timestamp="tx.timestamp"
                 :comment="tx.comment"
                 :is-dust="tx.isDust"
-                @copy="emit('copy')"
+                @copy="(addr) => emit('copy', addr)"
             />
         </div>
     </div>

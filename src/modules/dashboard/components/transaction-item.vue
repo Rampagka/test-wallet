@@ -7,6 +7,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
     direction: TransactionDirection
+    address: string
     shortAddress: string
     amount: string
     timestamp: number
@@ -21,7 +22,7 @@ const formattedTime = computed(() => formatTransactionTime(props.timestamp))
 const amountDisplay = computed(() => (isIncoming.value ? `+${props.amount}` : `-${props.amount}`))
 
 const emit = defineEmits<{
-    copy: []
+    copy: [address: string]
 }>()
 </script>
 
@@ -56,7 +57,7 @@ const emit = defineEmits<{
                     v-if="!isDust"
                     v-bind="props"
                     class="flex items-center justify-center rounded-full bg-bg-secondary p-1 transition-opacity hover:opacity-80"
-                    @click="emit('copy')"
+                    @click="emit('copy', props.address)"
                 >
                     <v-icon size="12" color="secondary">mdi-content-copy</v-icon>
                 </button>

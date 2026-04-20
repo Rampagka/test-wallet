@@ -22,8 +22,8 @@ const {
     refresh,
 } = useDashboard()
 
-function onCopy() {
-    copy(address.value)
+function onCopy(addr?: string) {
+    copy(addr ?? address.value)
 }
 
 function onAddWallet(mode: 'create' | 'import') {
@@ -58,7 +58,7 @@ function onSwitchAccount(index: number) {
             :is-loading="isTransactionsLoading"
             v-model:search-query="searchQuery"
             class="flex-1 px-4"
-            @copy="onCopy"
+            @copy="(addr) => onCopy(addr)"
         />
 
         <v-snackbar v-model="isCopied" :timeout="2000" color="success" class="copy-snackbar">

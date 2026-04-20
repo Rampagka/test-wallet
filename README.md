@@ -4,7 +4,7 @@ Self-custodial web wallet for TON blockchain (testnet). Frontend-only — no bac
 
 Built as a technical assessment, then extended with improvements based on code review feedback. See **[What I improved after review](#what-i-improved-after-review)** section below — this repo intentionally shows the *process* of iterating on feedback, not just a polished result.
 
-**Live demo:** https://ton-wallet-testnet.vercel.app *(замени на свой после деплоя)*
+**Live demo:** https://ton-crypto-wallet.vercel.app/
 **Stack:** Vue 3 · TypeScript · Vite · Pinia · Tailwind CSS 4 · Vuetify 4 · @ton/ton · @ton/crypto
 
 ---
@@ -51,7 +51,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173.
+Open http://localhost:8080.
 
 ### Getting testnet TON
 

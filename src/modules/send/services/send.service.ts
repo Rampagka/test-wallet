@@ -1,7 +1,7 @@
 import { rateLimited } from '@/common/helpers/rate-limiter'
 import tonClient from '@/common/services/ton-client'
 
-import { SendMode, internal } from '@ton/core'
+import { SendMode, internal, toNano } from '@ton/core'
 import { mnemonicToPrivateKey } from '@ton/crypto'
 import { WalletContractV5R1 } from '@ton/ton'
 
@@ -32,8 +32,6 @@ export async function sendTransaction(params: SendTransactionParams): Promise<nu
     // Rate-limited API calls
     const seqno = await rateLimited(() => contract.getSeqno())
 
-    const amountNano = BigInt(Math.floor(parseFloat(amount) * 1e9))
-
     await rateLimited(() =>
         contract.sendTransfer({
             secretKey: keyPair.secretKey,
@@ -42,7 +40,7 @@ export async function sendTransaction(params: SendTransactionParams): Promise<nu
             messages: [
                 internal({
                     to,
-                    value: amountNano,
+                    value: toNano(amount),
                     bounce: false,
                     body: comment,
                 }),

@@ -6,7 +6,7 @@ import {
     isBounceable,
     isSimilarAddress,
     isValidTonAddress,
-} from './address-validation'
+} from '@/modules/send/helpers/address-validation'
 
 // Real addresses derived from known hashes — guaranteed parseable by @ton/core
 const hash1 = Buffer.alloc(32, 0xaa)

@@ -30,7 +30,6 @@ function parseTransaction(
     knownAddresses: Set<string>,
 ): Transaction {
     const hash = tx.hash().toString('hex')
-    const lt = tx.lt.toString()
     const timestamp = tx.now
 
     let direction: TransactionDirection = 'out'
@@ -72,13 +71,11 @@ function parseTransaction(
 
     return {
         hash,
-        lt,
         timestamp,
         direction,
         address: counterpartyAddress,
         shortAddress: counterpartyAddress ? formatShortAddress(counterpartyAddress) : 'Неизвестно',
         amount,
-        amountNano,
         comment,
         isDust,
     }

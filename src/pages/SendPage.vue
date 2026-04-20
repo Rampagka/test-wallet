@@ -15,6 +15,7 @@ const {
     isConfirmationModalOpen,
     isPoisoningWarningModalOpen,
     similarAddressFound,
+    activeWarnings,
     isSending,
     sendSuccess,
     sendError,
@@ -26,7 +27,7 @@ const {
     setMaxAmount,
 } = useSend()
 
-const { isRefreshing } = useDashboard()
+useDashboard()
 </script>
 
 <template>
@@ -58,6 +59,7 @@ const { isRefreshing } = useDashboard()
                 :amount="formData.amount"
                 :comment="formData.comment"
                 :fee="estimatedFee"
+                :warnings="activeWarnings"
                 @confirm="confirmSend"
                 @cancel="cancelSend"
             />

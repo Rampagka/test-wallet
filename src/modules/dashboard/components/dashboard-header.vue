@@ -44,13 +44,13 @@ const isAddMenuOpen = ref(false)
                 </template>
                 <v-list density="compact" class="rounded-xl! bg-bg-secondary!">
                     <v-list-item @click="emit('add-wallet', 'create')">
-                        <template #prepend class="list-item">
+                        <template #prepend>
                             <v-icon size="20">mdi-wallet-plus-outline</v-icon>
                         </template>
                         <v-list-item-title class="text-sm">Создать кошелёк</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="emit('add-wallet', 'import')">
-                        <template #prepend class="list-item">
+                        <template #prepend>
                             <v-icon size="20">mdi-import</v-icon>
                         </template>
                         <v-list-item-title class="text-sm">Импортировать</v-list-item-title>

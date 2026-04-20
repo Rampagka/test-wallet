@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import { ButtonAccent, ButtonError } from '@/common/ui'
 
+import { WARNING_MESSAGES, WARNING_TITLES } from '@/modules/send/consts/warnings'
+import type { WarningType } from '@/modules/send/models/types/warning-type'
+
 interface Props {
     isOpen: boolean
     to: string
     amount: string
     comment?: string
     fee: string
+    warnings?: WarningType[]
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const CONFIRMATION_WARNINGS: WarningType[] = ['NEW_ADDRESS', 'BOUNCEABLE_ADDRESS', 'OWN_ADDRESS', 'ENTIRE_BALANCE']
+
+const activeAlerts = () =>
+    (props.warnings ?? []).filter((w) => CONFIRMATION_WARNINGS.includes(w))
 
 const emit = defineEmits<{
     confirm: []
@@ -41,6 +50,19 @@ const emit = defineEmits<{
             </div>
 
             <v-card-text class="px-6 py-4">
+                <div v-if="activeAlerts().length > 0" class="flex flex-col gap-2 mb-4">
+                    <v-alert
+                        v-for="w in activeAlerts()"
+                        :key="w"
+                        :type="w === 'NEW_ADDRESS' ? 'warning' : 'error'"
+                        variant="tonal"
+                        density="compact"
+                        class="rounded-xl!"
+                    >
+                        <strong>{{ WARNING_TITLES[w] }}:</strong> {{ WARNING_MESSAGES[w] }}
+                    </v-alert>
+                </div>
+
                 <div class="flex flex-col gap-4">
                     <div>
                         <p class="mb-1 text-sm text-text-muted">Кому:</p>

@@ -1,4 +1,5 @@
 import type { SendFormData, SendFormErrors } from '@/modules/send/models/types/send-form'
+import type { WarningType } from '@/modules/send/models/types/warning-type'
 
 import {
     isBounceable,
@@ -35,6 +36,7 @@ export function useSend() {
     const isConfirmationModalOpen = ref(false)
     const isPoisoningWarningModalOpen = ref(false)
     const similarAddressFound = ref('')
+    const activeWarnings = ref<WarningType[]>([])
 
     // Состояния отправки
     const isSending = ref(false)
@@ -95,8 +97,8 @@ export function useSend() {
      * Проверка предупреждений
      * Возвращает массив типов предупреждений
      */
-    function checkWarnings(): string[] {
-        const warnings: string[] = []
+    function checkWarnings(): WarningType[] {
+        const warnings: WarningType[] = []
 
         // Address poisoning
         const { isSimilar, matchedAddress } = isSimilarAddress(
@@ -124,6 +126,15 @@ export function useSend() {
             warnings.push('ENTIRE_BALANCE')
         }
 
+        // New address — never interacted before
+        const addr = formData.value.address
+        const isKnown = knownAddresses.value.some(
+            (known) => known.toLowerCase() === addr.toLowerCase(),
+        )
+        if (!isKnown && addr !== walletStore.address) {
+            warnings.push('NEW_ADDRESS')
+        }
+
         return warnings
     }
 
@@ -134,6 +145,7 @@ export function useSend() {
         if (!validateForm()) return
 
         const warnings = checkWarnings()
+        activeWarnings.value = warnings
 
         // Если есть address poisoning → показываем специальный модал
         if (warnings.includes('ADDRESS_POISONING')) {
@@ -141,7 +153,7 @@ export function useSend() {
             return
         }
 
-        // Иначе просто открываем модал подтверждения
+        // Открываем модал подтверждения (с предупреждениями внутри если есть)
         isConfirmationModalOpen.value = true
     }
 
@@ -222,6 +234,7 @@ export function useSend() {
         isConfirmationModalOpen,
         isPoisoningWarningModalOpen,
         similarAddressFound,
+        activeWarnings,
         isSending,
         sendSuccess,
         sendError,

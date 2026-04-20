@@ -1,5 +1,5 @@
 import { Linter } from 'eslint'
-import importPlugin from 'eslint-plugin-import'
+import importPlugin from 'eslint-plugin-import-x'
 
 const MODULES = ['wallet', 'dashboard', 'send', 'receive', 'contacts', 'nav-bar']
 

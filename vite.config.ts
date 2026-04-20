@@ -1,3 +1,4 @@
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { URL, fileURLToPath } from 'node:url'
@@ -8,6 +9,7 @@ import vuetify from 'vite-plugin-vuetify'
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
+        basicSsl(),
         vue(),
         vuetify({ autoImport: true }),
         tailwindcss(),

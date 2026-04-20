@@ -11,10 +11,9 @@ Built as a technical assessment, then extended with improvements based on code r
 
 ## Screenshots
 
-- `docs/screenshot-dashboard.png` — main screen with balance & history
-- `docs/screenshot-send.png` — send flow with warnings
-- `docs/screenshot-receive.png` — receive screen with QR code
-- `docs/screenshot-contacts.png` — add your contacts
+| Dashboard | Send | Receive | Contacts |
+|---|---|---|---|
+| ![Dashboard](./docs/screenshot-dashboard.png) | ![Send](./docs/screenshot-send.png) | ![Receive](./docs/screenshot-receive.png) | ![Contacts](./docs/screenshot-contacts.png) |
 
 ---
 
@@ -44,8 +43,8 @@ The send flow blocks the user with an explicit modal for these scenarios:
 ## Quick start
 
 ```bash
-git clone https://github.com/Rampagka/test-wallet.git
-cd test-wallet
+git clone https://github.com/Rampagka/ton-self-custodial-wallet
+cd ton-self-custodial-wallet
 npm install
 npm run dev
 ```
@@ -156,15 +155,15 @@ This is a testnet assessment, so several decisions favor clarity and development
 
 This project was originally submitted as a technical assessment and I received detailed code review feedback. Instead of hiding that, I kept it as a learning document and iterated the codebase against it. The commits tagged `fix(review):` address each point.
 
-| Feedback | Status | Commit |
-|---|---|---|
-| Missing warning for unknown / first-time recipient | ✅ Fixed | `fix(review): add NEW_ADDRESS warning for first-time recipients` |
-| Confirmation copy button copied wrong address (own wallet instead of counterparty) | ✅ Fixed | `fix(review): propagate counterparty address in transaction copy` |
-| False error after 60s seqno timeout (tx may have actually succeeded) | ✅ Fixed | `fix(review): show pending state instead of error on confirmation timeout` |
-| Infinite retry loop with silent failures — skeleton forever on network issues | ✅ Fixed | `fix(review): bounded retries + error state with manual retry` |
-| README was a Vite template, not a project document | ✅ Fixed | You're reading it |
-| `npm install` failed on peer-dep conflict (eslint 10 vs eslint-plugin-import) | ✅ Fixed | `fix(review): bump eslint-plugin-import to eslint-10 compatible version` |
-| No tests | ✅ Added | Added Vitest + tests for address-validation helpers |
+| Feedback                                                                           | Status | Commit                                                                   |
+|------------------------------------------------------------------------------------|---|--------------------------------------------------------------------------|
+| Missing warning for unknown / first-time recipient                                 | ✅ Fixed | `fix(send): add NEW_ADDRESS warning for first-time recipients`           |
+| Confirmation copy button copied wrong address (own wallet instead of counterparty) | ✅ Fixed | `fix(dashboard): propagate counterparty address in transaction copy`     |
+| False error after 60s seqno timeout (tx may have actually succeeded)               | ✅ Fixed | `fix(send): show pending state instead of error on confirmation timeout` |
+| Infinite retry loop with silent failures — skeleton forever on network issues      | ✅ Fixed | `fix(dashboard): bounded retries + error state with manual retry`        |
+| README was a Vite template, not a project document                                 | ✅ Fixed | You're reading it                                                        |
+| `npm install` failed on peer-dep conflict (eslint 10 vs eslint-plugin-import)      | ✅ Fixed | `chore(test): add Vitest + tests for address-validation helpers`         |
+| No tests                                                                           | ✅ Added | `chore(test): add Vitest + tests for address-validation helpers`         |
 
 **Why publish the feedback?** Because in my experience the most useful signal about a developer isn't what they write first — it's how they respond to review. Hiding the iteration would be less honest.
 

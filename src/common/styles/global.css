@@ -1,3 +1,10 @@
+/*
+  Declare layer order: vuetify < base < components < utilities
+  Vuetify CSS is wrapped in @layer vuetify by a Vite plugin so that
+  Tailwind utilities (in @layer utilities) always take precedence.
+*/
+@layer vuetify, base, components, utilities;
+
 @import 'tailwindcss';
 
 @theme inline {

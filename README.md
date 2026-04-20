@@ -11,11 +11,10 @@ Built as a technical assessment, then extended with improvements based on code r
 
 ## Screenshots
 
-*Add 3-4 screenshots here after UI is polished:*
 - `docs/screenshot-dashboard.png` — main screen with balance & history
 - `docs/screenshot-send.png` — send flow with warnings
-- `docs/screenshot-poisoning.png` — address poisoning warning modal
 - `docs/screenshot-receive.png` — receive screen with QR code
+- `docs/screenshot-contacts.png` — add your contacts
 
 ---
 
